@@ -1,0 +1,243 @@
+---
+title: "Week 6 Assingment - Bank Loan Data"
+author: "Chloé Winters"
+date: "2025-03-01"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+    toc_depth: 4
+    fig_width: 6
+    fig_height: 4
+    fig_caption: yes
+    number_sections: yes
+    toc_collapsed: yes
+    code_folding: hide
+    code_download: yes
+    smooth_scroll: yes
+    theme: lumen
+  pdf_document: 
+    toc: yes
+    toc_depth: 4
+    fig_caption: yes
+    number_sections: yes
+  word_document:
+    toc: yes
+    toc_depth: '4'
+---
+
+<style type="text/css">
+
+/* Cascading Style Sheets (CSS) is a stylesheet language used to describe the presentation of a document written in HTML or XML. it is a simple mechanism for adding style (e.g., fonts, colors, spacing) to Web documents. */
+
+h1.title {  /* Title - font specifications of the report title */
+  font-size: 24px;
+  color: DarkRed;
+  text-align: center;
+  font-family: "Gill Sans", sans-serif;
+}
+h4.author { /* Header 4 - font specifications for authors  */
+  font-size: 20px;
+  font-family: system-ui;
+  color: DarkRed;
+  text-align: center;
+}
+h4.date { /* Header 4 - font specifications for the date  */
+  font-size: 18px;
+  font-family: system-ui;
+  color: DarkBlue;
+  text-align: center;
+}
+h1 { /* Header 1 - font specifications for level 1 section title  */
+    font-size: 22px;
+    font-family: system-ui;
+    color: navy;
+    text-align: left;
+}
+h2 { /* Header 2 - font specifications for level 2 section title */
+    font-size: 20px;
+    font-family: "Times New Roman", Times, serif;
+    color: navy;
+    text-align: left;
+}
+
+h3 { /* Header 3 - font specifications of level 3 section title  */
+    font-size: 18px;
+    font-family: "Times New Roman", Times, serif;
+    color: navy;
+    text-align: left;
+}
+
+h4 { /* Header 4 - font specifications of level 4 section title  */
+    font-size: 18px;
+    font-family: "Times New Roman", Times, serif;
+    color: darkred;
+    text-align: left;
+}
+
+body { background-color:white; }
+
+.highlightme { background-color:yellow; }
+
+p { background-color:white; }
+
+</style>
+
+```{r setup, include=FALSE}
+library(haven)
+library(dplyr)
+
+```
+
+# Introduction
+
+In this assignment we are going to be looking at bank loan data, doing some data cleaning and editing, and then looking at some density curves. 
+
+# Materials
+
+First we need to load in the data set. This data is cut into 9 subsets so they all need to be loaded in. After loading them all in, some of the variables did not have matching categorizations, not all the ApprovalFY variables were coded the same so that variable needs to be standardized across all the subsets before merging them. After the variables are all consistent it is possible to combine all of the data sets into one larger data set. 
+
+```{r}
+loan01 = read.csv("https://chloewinters79.github.io/STA490/Data/w06-SBAnational01%20.csv", header = TRUE)[, -1]
+loan02 = read.csv("https://chloewinters79.github.io/STA490/Data/w06-SBAnational02.csv", header = TRUE)[, -1]
+loan03 = read.csv("https://chloewinters79.github.io/STA490/Data/w06-SBAnational03.csv", header = TRUE)[, -1]
+loan04 = read.csv("https://chloewinters79.github.io/STA490/Data/w06-SBAnational04.csv", header = TRUE)[, -1]
+loan05 = read.csv("https://chloewinters79.github.io/STA490/Data/w06-SBAnational05.csv", header = TRUE)[, -1]
+loan06 = read.csv("https://chloewinters79.github.io/STA490/Data/w06-SBAnational06.csv", header = TRUE)[, -1]
+loan07 = read.csv("https://chloewinters79.github.io/STA490/Data/w06-SBAnational07.csv", header = TRUE)[, -1]
+loan08 = read.csv("https://chloewinters79.github.io/STA490/Data/w06-SBAnational08.csv", header = TRUE)[, -1]
+loan09 = read.csv("https://chloewinters79.github.io/STA490/Data/w06-SBAnational09.csv", header = TRUE)[, -1]
+```
+
+
+
+```{r}
+loan01$ApprovalFY <- as.integer(loan01$ApprovalFY)
+loan02$ApprovalFY <- as.integer(loan02$ApprovalFY)
+loan03$ApprovalFY <- as.integer(loan03$ApprovalFY)
+loan04$ApprovalFY <- as.integer(loan04$ApprovalFY)
+loan05$ApprovalFY <- as.integer(loan05$ApprovalFY)
+loan06$ApprovalFY <- as.integer(loan06$ApprovalFY)
+loan07$ApprovalFY <- as.integer(loan07$ApprovalFY)
+loan08$ApprovalFY <- as.integer(loan08$ApprovalFY)
+loan09$ApprovalFY <- as.integer(loan09$ApprovalFY)
+
+```
+
+```{r}
+loans <- bind_rows(loan01, loan02, loan03, loan04, loan05, loan06, loan07, loan08, loan09)
+```
+
+## Data Cleaning 
+
+This assignment calls for some specific forms of data cleaning, which we can now work on since all the subsets have been combined into one large data set. First it is asked that all records with a missing MIS_Status are deleted so that is what we start with. Then, all the currency variables needed to be converted regular numeric variables. Which was done by creating a function that was then applied to the appropriate variables. 
+
+```{r}
+# Deletes records with a missing MIS_Status
+loans_cleaned <- loans%>%
+  filter(!is.na(MIS_Status))
+
+# Converts currency variables to regular numeric variables
+fix_loans <- function(loans_cleaned) {
+  as.numeric(gsub("[$,]", "", loans_cleaned))
+}
+
+
+loans_cleaned$DisbursementGross <- fix_loans(loans_cleaned$DisbursementGross)
+loans_cleaned$BalanceGross <- fix_loans(loans_cleaned$BalanceGross)
+loans_cleaned$ChgOffPrinGr <- fix_loans(loans_cleaned$ChgOffPrinGr)
+loans_cleaned$GrAppv <- fix_loans(loans_cleaned$GrAppv)
+loans_cleaned$SBA_Appv <- fix_loans(loans_cleaned$SBA_Appv)
+```
+
+## Recoding
+
+It is requested that one of the categorical variables be recoded so the categories were less sparse. I made the decision to recode the FranchiseCode variable into FranchiseCodeNew which would display a 0 if it was not a Franchise and a 1 if was a Franchise. Since there were several FranchiseCodes with only 1 or 2 observations and any FranchsieCode of 0 or 1 indicated that it was not a franchise it made more sense to consolidate this variable. 
+
+```{r}
+
+freq_table <- table(loans_cleaned$FranchiseCode)
+table(freq_table)
+
+# Recode the old FranchiseCode to FranchiseCodeNew
+loans_cleaned$FranchiseCodeNew <- ifelse(loans_cleaned$FranchiseCode %in% c(0, 1), 0, 1)
+
+```
+
+# Methodolgy & Analysis
+
+Now that the requested data cleaning has been completed it is time to engage in some of the requested analysis. It was requested that using the recoded variable that we created in the previous section that we calculate the loan default rates for the new categories. Looking at the output, it seems that non-franchises had a default rate of 17.67% and franchises had a default rate of 15.18%, so the franchises had a slightly lower default rate. 
+
+```{r}
+
+# Calculate default rate by FranchiseCodeNew based on CHGOFF in MIS_Status
+default_rates <- loans_cleaned %>%
+  group_by(FranchiseCodeNew) %>%
+  summarise(
+    default_rate = sum(MIS_Status == "CHGOFF", na.rm = TRUE) / n() * 100  # Default rate as percentage
+  )
+
+# View the result
+print(default_rates)
+```
+
+In addition to recoding a categorical variable, it is asked that the variable GrAppv gets discretized into 5 categories or sub populations. In order to create these categories, I calculated the quantiles and used them to determine my breaking points to the quantiels were approximately the same size. 
+
+After creating these categories we were asked to create density curves of SBA_Appv with the 5 categories. Originally, we did not take the log of SBA_Appv but the variable was very skewed so it made more sense to take the log of SBA_Appv to make the graph more readable. The original density curve had a large axis making the curves very small and difficult to interpret. There was also a large amount of overlap of the separate categories which lead to the issues with interpretation. Thus taking the log results in much more interpretable density curves. 
+
+```{r}
+
+# Calculate quantiles to determine break points
+quantiles <- quantile(loans_cleaned$GrAppv, probs = seq(0, 1, by = 0.2), na.rm = TRUE)
+
+# Print the quantiles (break points)
+print(quantiles)
+
+
+# Define break points based on the quantiles
+break_points <- c(200, 25000, 56000, 120000, 285000, 5472000)
+
+# Discretize GrAppv using the quantile-based break points
+loans_cleaned$GrAppv_discretized <- cut(
+  loans_cleaned$GrAppv,
+  breaks = break_points,  # Use custom break points
+  labels = c("1", "2", "3", "4", "5"),  # Labels for the categories
+  include.lowest = TRUE
+)
+
+```
+
+```{r}
+# Load necessary library
+library(ggplot2)
+
+# Ensure GrAppv is discretized (if not already)
+loans_cleaned$GrAppv_discretized <- cut(
+  loans_cleaned$GrAppv,
+  breaks = c(200, 25000, 56000, 120000, 285000, 5472000),
+  labels = c("1", "2", "3", "4", "5"),
+  include.lowest = TRUE
+)
+
+# Apply log transformation to SBA_Appv to handle skew
+loans_cleaned$log_SBA_Appv <- log(loans_cleaned$SBA_Appv + 1)
+
+# Create ggplot to overlay density curves for log-transformed SBA_Appv without fill color
+ggplot(loans_cleaned, aes(x = log_SBA_Appv, color = GrAppv_discretized)) +
+  geom_density(alpha = 0.5, size = 1) +  # Only lines with transparency
+  labs(
+    title = "Density Curves of Log(SBA_Appv) for Different GrAppv Buckets",
+    x = "Log(SBA_Appv)",
+    y = "Density"
+  ) +
+  theme_minimal() +
+  scale_color_manual(values = c("red", "orange", "green", "blue", "purple")) +  # Customize line colors
+  guides(
+    color = guide_legend(
+      override.aes = list(
+        fill = c("red", "orange", "green", "blue", "purple")  # Use solid fill color in the legend
+      )
+    )
+  )
+
+```
