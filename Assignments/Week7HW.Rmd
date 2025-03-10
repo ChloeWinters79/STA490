@@ -1,0 +1,188 @@
+---
+title: "Week7"
+author: "Chloé Winters"
+date: "2025-03-09"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+    toc_depth: 4
+    fig_width: 6
+    fig_height: 4
+    fig_caption: yes
+    number_sections: yes
+    toc_collapsed: yes
+    code_folding: hide
+    code_download: yes
+    smooth_scroll: yes
+    theme: lumen
+  pdf_document: 
+    toc: yes
+    toc_depth: 4
+    fig_caption: yes
+    number_sections: yes
+  word_document:
+    toc: yes
+    toc_depth: '4'
+---
+
+```{=html}
+<style type="text/css">
+
+/* Cascading Style Sheets (CSS) is a stylesheet language used to describe the presentation of a document written in HTML or XML. it is a simple mechanism for adding style (e.g., fonts, colors, spacing) to Web documents. */
+
+h1.title {  /* Title - font specifications of the report title */
+  font-size: 24px;
+  color: DarkRed;
+  text-align: center;
+  font-family: "Gill Sans", sans-serif;
+}
+h4.author { /* Header 4 - font specifications for authors  */
+  font-size: 20px;
+  font-family: system-ui;
+  color: DarkRed;
+  text-align: center;
+}
+h4.date { /* Header 4 - font specifications for the date  */
+  font-size: 18px;
+  font-family: system-ui;
+  color: DarkBlue;
+  text-align: center;
+}
+h1 { /* Header 1 - font specifications for level 1 section title  */
+    font-size: 22px;
+    font-family: system-ui;
+    color: navy;
+    text-align: left;
+}
+h2 { /* Header 2 - font specifications for level 2 section title */
+    font-size: 20px;
+    font-family: "Times New Roman", Times, serif;
+    color: navy;
+    text-align: left;
+}
+
+h3 { /* Header 3 - font specifications of level 3 section title  */
+    font-size: 18px;
+    font-family: "Times New Roman", Times, serif;
+    color: navy;
+    text-align: left;
+}
+
+h4 { /* Header 4 - font specifications of level 4 section title  */
+    font-size: 18px;
+    font-family: "Times New Roman", Times, serif;
+    color: darkred;
+    text-align: left;
+}
+
+body { background-color:white; }
+
+.highlightme { background-color:yellow; }
+
+p { background-color:white; }
+
+</style>
+```
+
+```{r setup, include=FALSE, warning=FALSE}
+library(haven)
+library(dplyr)
+```
+
+# Introduction
+
+In this assignment we are going to be looking at bank loan data, doing some data cleaning and editing, and then taking 4 different types of random samples. 00
+
+# Materials
+
+First we need to load in the data set. This data is cut into 9 subsets so they all need to be loaded in. After loading them all in, some of the variables did not have matching categorizations, not all the ApprovalFY variables were coded the same so that variable needs to be standardized across all the subsets before merging them. After the variables are all consistent it is possible to combine all of the data sets into one larger data set. 
+
+
+```{r}
+loan01 = read.csv("https://chloewinters79.github.io/STA490/Data/w06-SBAnational01%20.csv", header = TRUE)[, -1]
+loan02 = read.csv("https://chloewinters79.github.io/STA490/Data/w06-SBAnational02.csv", header = TRUE)[, -1]
+loan03 = read.csv("https://chloewinters79.github.io/STA490/Data/w06-SBAnational03.csv", header = TRUE)[, -1]
+loan04 = read.csv("https://chloewinters79.github.io/STA490/Data/w06-SBAnational04.csv", header = TRUE)[, -1]
+loan05 = read.csv("https://chloewinters79.github.io/STA490/Data/w06-SBAnational05.csv", header = TRUE)[, -1]
+loan06 = read.csv("https://chloewinters79.github.io/STA490/Data/w06-SBAnational06.csv", header = TRUE)[, -1]
+loan07 = read.csv("https://chloewinters79.github.io/STA490/Data/w06-SBAnational07.csv", header = TRUE)[, -1]
+loan08 = read.csv("https://chloewinters79.github.io/STA490/Data/w06-SBAnational08.csv", header = TRUE)[, -1]
+loan09 = read.csv("https://chloewinters79.github.io/STA490/Data/w06-SBAnational09.csv", header = TRUE)[, -1]
+```
+
+```{r, warning=FALSE}
+loan01$ApprovalFY <- as.integer(loan01$ApprovalFY)
+loan02$ApprovalFY <- as.integer(loan02$ApprovalFY)
+loan03$ApprovalFY <- as.integer(loan03$ApprovalFY)
+loan04$ApprovalFY <- as.integer(loan04$ApprovalFY)
+loan05$ApprovalFY <- as.integer(loan05$ApprovalFY)
+loan06$ApprovalFY <- as.integer(loan06$ApprovalFY)
+loan07$ApprovalFY <- as.integer(loan07$ApprovalFY)
+loan08$ApprovalFY <- as.integer(loan08$ApprovalFY)
+loan09$ApprovalFY <- as.integer(loan09$ApprovalFY)
+
+```
+
+```{r}
+loans <- bind_rows(loan01, loan02, loan03, loan04, loan05, loan06, loan07, loan08, loan09)
+
+```
+
+## Data Cleaning and Setup
+
+This assignment called for some specific data cleaning and setup. First, it asked that any observations where MIS_Status are missing are removed. Additionally, as done in the previous weeks assignment, a categorical variable needed to be redefined and then used for a stratified random sample. The variable FranchiseCode is recoded into FranchiseCodeNew so 0 represents observations that are not a franchise and 1 represents observations that are a franchise.  
+
+```{r}
+loans_cleaned <- loans %>%
+  filter(!is.na(MIS_Status) & MIS_Status != "")
+loans_cleaned$FranchiseCodeNew <- ifelse(loans_cleaned$FranchiseCode %in% c(0, 1), 0, 1)
+
+loans_cleaned <- loans_cleaned %>%
+  mutate(FranchiseCodeNew = as.factor(FranchiseCodeNew))
+```
+
+# Methodolgy 
+
+# Random Sampling 
+
+This assignment calls for 4 different types of random samples. The 4 requested samples were a simple random sample, systematic random sample, stratified random sample, and a cluster sample. Since our original data set after combining is almost 900,000 observation, since there was no sample size recommended in the assignment, the decision was made to make approximately 1,000 observation random samples. This gives a large enough sample to decently represent the original data set without being too large to work with practically. 
+
+For the simple random sample, a random sample of size 1,000 was taken from the cleaned data set. When taking the systematic random sample the random value k was selected to be 897, the first observation was taken, then the i + 897 observations were taken until there were 1001 observations in the data set. Moving to the stratified random sample, the sample was stratified on the variable FranchsieCodeNew and where 0 means that observation is not a franchise and 1 means the observation is a franchise. The stratified random sample consists of 500 random observations where FranchisCodeNew is 0 and 500 random observations where FranchiseCodeNew is 1. Finally it was time to take the cluster sample. The assignment requests that the samples be taken based on zip code. After some trial and error it was determined that to get a random sample size of approximately 1,000 observations it was best to take 20 zip code clusters. This produced a cluster sample of 1009 observations, which is a similar size to the other random samples created for this assignment.
+
+```{r}
+set.seed(123) 
+
+# Simple Random Sample
+rand_sample <- loans_cleaned %>%
+  sample_n(1000)
+
+# Systematic Random Sample 
+
+k <- nrow(loans_cleaned) %/% 1000
+
+systematic_sample <- loans_cleaned[seq(1, nrow(loans_cleaned), by = k),]
+
+# Stratified Random Sample
+
+stratified_sample_data <- loans_cleaned %>%
+  group_by(FranchiseCodeNew) %>%
+  sample_n(500) %>%  # Adjust sample size as needed
+  ungroup()
+
+# Cluster Sample
+
+
+unique_zip <- unique(loans_cleaned$Zip)
+
+selected_clusters <- sample(unique_zip, 20) 
+
+cluster_sample <- loans_cleaned %>%
+  filter(Zip %in% selected_clusters)
+```
+
+
+
+# Conclusion
+
+All the requested random samples have been taken from the original cleaned data set. Now there are 4 different random samples with approximately the same sample size to be used in future analysis. These random samples can be used for analysis in future assignments because at this time the assignment calls for no analysis or use of the radnom samples after creating them. 
