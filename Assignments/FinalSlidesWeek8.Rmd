@@ -114,7 +114,6 @@ library(xaringanthemer)
 
 - Each observation is a loan
 
-- Loan default status is our reference variable 
   ]
 <BR>
 <BR>
@@ -342,7 +341,7 @@ no.default.srs = x.table[,3]
 default.rate.srs = round(100*default.srs/(default.srs+no.default.srs),1)
 ##
 Region.code = names(default.rate.srs)    
-Region.name=c("Midwest", "Northeast", "Southeast", "West", "South")  
+Region.name=c("Midwest", "Northeast", "South", "Southeast", "West")  
 default.rate.pop = default.rate[Region.code]
 
 SRS.pop.rates = cbind(default.rate.pop,default.rate.srs)
@@ -361,7 +360,7 @@ kable(SRS.pop.rates, caption="Comparison of Region-specific default rates
 # Systematic Random Sample
 
 <font size = 6>
-• We will next take a stratified random sample <BR>
+• We will next take a systematic random sample <BR>
 <BR>
 •  Once again, we will use a sample size of 3,000 <BR>
 <BR>
