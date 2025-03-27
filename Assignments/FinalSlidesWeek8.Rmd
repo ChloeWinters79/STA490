@@ -392,7 +392,7 @@ dim(sys.sample)
 
 
 ```{r echo=FALSE, results='hide'}
-desired_order <- c("Midwest", "Northeast", "Southeast", "West", "South")
+desired_order <- c("Midwest", "Northeast", "South", "Southeast", "West")
 sys.sample$Region <- factor(sys.sample$Region, levels = desired_order)
 x.table = table(sys.sample$Region, sys.sample$MIS_Status)
 no.lab.sys = x.table[,1]      
