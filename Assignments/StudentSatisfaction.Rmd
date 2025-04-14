@@ -1,0 +1,348 @@
+---
+title: "Survey Data Processing, Validity, and Reliability for Student Satisfaction"
+author: "Chloe Winters"
+date: "April 13th 2025"
+output:
+  html_document: 
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+    number_sections: yes
+    toc_collapsed: yes
+    code_folding: hide
+    code_download: yes
+    smooth_scroll: yes
+    theme: lumen
+  word_document: 
+    toc: yes
+    toc_depth: 4
+    fig_caption: yes
+    keep_md: yes
+  pdf_document:
+    toc: yes
+    keep_tex: false
+    toc_depth: 4
+    fig_caption: yes
+    number_sections: yes
+    fig_width: 5
+    fig_height: 4
+---
+
+```{=html}
+<style type="text/css">
+
+div#TOC li {
+    list-style:none;
+    background-image:none;
+    background-repeat:none;
+    background-position:0;
+}
+h1.title {
+  font-size: 24px;
+  font-weight: bold;
+  color: DarkRed;
+  text-align: center;
+}
+h4.author { /* Header 4 - and the author and data headers use this too  */
+  font-size: 18px;
+  font-family: "Times New Roman", Times, serif;
+  font-weight: bold;
+  color: DarkRed;
+  text-align: center;
+}
+h4.date { /* Header 4 - and the author and data headers use this too  */
+  font-size: 18px;
+  font-weight: bold;
+  font-family: "Times New Roman", Times, serif;
+  color: DarkBlue;
+  text-align: center;
+}
+
+h1 { /* Header 3 - and the author and data headers use this too  */
+    font-size: 20px;
+  font-weight: bold;
+    font-family: "Times New Roman", Times, serif;
+    color: darkred;
+    text-align: center;
+}
+h2 { /* Header 3 - and the author and data headers use this too  */
+    font-size: 18px;
+  font-weight: bold;
+    font-family: "Times New Roman", Times, serif;
+    color: navy;
+    text-align: left;
+}
+
+h3 { /* Header 3 - and the author and data headers use this too  */
+    font-size: 16px;
+    font-family: "Times New Roman", Times, serif;
+  font-weight: bold;
+    color: navy;
+    text-align: left;
+}
+
+</style>
+```
+
+
+```{r setup, include=FALSE}
+if (!require("tidyverse")) {
+   install.packages("tidyverse")
+   library(tidyverse)
+}
+if (!require("GPArotation")) {
+   install.packages("GPArotation")
+   library(GPArotation)
+}
+if (!require("nFactors")) {
+   install.packages("nFactors")
+   library(nFactors)
+}
+if (!require("parameters")) {
+   install.packages("parameters")
+   library(parameters)
+}
+if (!require("corrplot")) {
+   install.packages("corrplot")
+   library(corrplot)
+}
+if (!require("ggcorrplot")) {
+   install.packages("ggcorrplot")
+   library(ggcorrplot)
+}
+if (!require("ggfortify")) {
+   install.packages("ggfortify")
+   library(ggfortify)
+}
+if (!require("ggplot2")) {
+   install.packages("ggplot2")
+   library(ggplot2)
+}
+if (!require("GGally")) {
+   install.packages("GGally")
+   library(GGally)
+}
+if (!require("GGally")) {
+   install.packages("GGally")
+   library(GGally)
+}
+if (!require("CCA")) {
+   install.packages("CCA")
+   library(CCA)
+}
+if (!require("olsrr")) {
+   install.packages("olsrr")
+   library(olsrr)
+}
+if (!require("psych")) {
+   install.packages("psych")
+   library(psych)
+}
+if (!require("cocron")) {
+   install.packages("cocron")
+   library(cocron)
+}
+if (!require("knitr")) {
+   install.packages("knitr")
+   library(knitr)
+}
+if (!require("pander")) {
+   install.packages("pander")
+   library(pander)
+}
+##
+knitr::opts_chunk$set(echo = TRUE,       
+                      warnings = FALSE,   
+                      results = TRUE,   
+                      message = FALSE,
+                      fig.align='center', 
+                      fig.pos = 'ht')
+```
+
+
+
+# Introduction
+
+The goal of this research project is to look at student satisfaction, which can be a helpful tool in understanding students learning experience. This survey looks at identifying several of the factors that influence a students learning experience and outcomes. This survey contains several multi-item questions to asses the students satisfaction. Those questions cover the following categories, student engagement in learning, student learning styles, writing and reading load, remedial experience, encouragement and support, growth and development, campus resource utilization, retention and how students pay for college. 
+
+
+# Materials 
+
+## Data Preperation
+
+The data set does originally load in will 664 observations where every other row is completely missing. From the information given regarding data collection we know that the size of the surveyed population was 334, and that participation was voluntary. This means that the NA rows are not missing observations and some data set loading error. Thus we are free to remove these rows. After doing so we are left with 332 observations. To see if any of the completed observations had any missing variables, code was run to check. None of the remaining observations had a single missing variable so there is no need for any data imputation or adjusting of the data set at this time. 
+
+```{r}
+survey_missing = read.csv("https://chloewinters79.github.io/STA490/Data/at-risk-survey-data.csv", header = TRUE)
+survey <- na.omit(survey_missing)
+```
+
+```{r}
+missing_rows <- survey[apply(is.na(survey), 1, any), ]
+print(missing_rows)
+```
+
+
+# Validity and Reliability Analysis 
+
+Now that the data set has been loaded in and properly clean it is time to test for the validity and reliability of the survey instruments. There are several scales that are going to be analyzed to determine student satisfaction and they will be analyzed in the order they exist in the data set. 
+
+## Students Engagement in Learning
+
+The first section we are starting with is student engagement in learning, which asks students to answer questions on a 1 - 4 scale of very often to never regarding things they have done this current school year. This includes going to class without completing the reading, receiving prompt feedback, making a class presentation, and several other items. We start with a correlation plot to see the relevance on student engagement in learning on student satisfaction.
+
+
+
+```{r}
+start_col <- which(names(survey) == "q41")
+end_col <- which(names(survey) == "q421")
+
+engagement = survey[, start_col:end_col]
+
+M=cor(engagement)
+corrplot.mixed(M, lower.col = "purple", upper = "ellipse", number.cex = .7, tl.cex = 0.7)
+```
+Looking at the results there does appear to be potential relevance to student satisfaction, there was high correlation, shown by skinnier ellipse, in a few places on the pairwise correlation plot. However, a majority of the ellipse are much larger indicating a low correlation. In this plot, the larger ellipse far outweigh the skinnier ellipse, so while there may be potential relevance for a few of the questions asked regarding student engagement in learning, a majority of the questions do not depict potential relevance. 
+
+## Student Learning Styles
+
+The next section covers student learning styles, this asks students to answer questions on the 1 - 4 scale of very much to very little regarding mental activities emphasized in their coursework that year. These include memorizing facts and applying theories or concepts. A correlation plot was created to analyze the relevance on learning styles on students satisfaction. 
+
+```{r}
+start_col <- which(names(survey) == "q51")
+end_col <- which(names(survey) == "q56")
+
+learning = survey[, start_col:end_col]
+
+M=cor(learning)
+corrplot.mixed(M, lower.col = "purple", upper = "ellipse", number.cex = .7, tl.cex = 0.7)
+```
+
+Unlike the plot for students engagement, this correlation plot does not have the larger ellipse outweighing the skinnier ellipse. This plot supports high correlation between students learning styles and satisfaction, and a high potential relevance between the two variables.  
+
+
+## Writing and Reading Load
+
+This section focuses on how much writing and reading the students are doing during the current school year. It asks them to answer questions about number of assigned textbooks, books read for pleasure, and written papers required that year on a 1-5 scale from none to more than 20. A correlation plot was created to look at the relevance of writing and reading load on student satisfaction. 
+
+```{r}
+start_col <- which(names(survey) == "q61")
+end_col <- which(names(survey) == "q63")
+
+writing = survey[, start_col:end_col]
+
+M=cor(writing)
+corrplot.mixed(M, lower.col = "purple", upper = "ellipse", number.cex = .7, tl.cex = 0.7)
+```
+
+This section is much shorter which results in a much shorter correlation plot. This makes it clear that the 3 ellipse are much larger, and do not support a high correlation between reading and writing load and student satisfaction, which does not support relevance. 
+
+
+## Remedial Experience
+
+The section on remedial experience asks students students to answer questions regarding things they plan on doing during their time attending the School of Businesses. These questions involve things like taking honors courses, internships, and college orientation programs. Students are asked to answer 1 for have done, 2 for plan to do, and 3 for have not done nor plan to. A correlation plot is created to examine potential relevance between remedial experience and student satisfaction. 
+
+```{r}
+start_col <- which(names(survey) == "q81")
+end_col <- which(names(survey) == "q89")
+
+remedial = survey[, start_col:end_col]
+
+M=cor(remedial)
+corrplot.mixed(M, lower.col = "purple", upper = "ellipse", number.cex = .7, tl.cex = 0.7)
+```
+Looking at remedial experience, there are 3 ellipse that are quite skinny and indicate a high correlation. However a majority of the ellipse are very large and showing a low correlation. This low correlation from a majority of the ellipse on the correlation plot does not support relevance between remedial experience and student satifaction. 
+
+
+## Encouragement and Support
+
+Encouragement and support focuses on seeing how much students believe the School of Business emphasizes things like spending time studying, thriving socially, and other things on a 1 - 4 scale of very much to very little. To examine the potential relevance between encouragement and support and student satisfaction we are going to analyze the below correlation plot. 
+
+```{r}
+start_col <- which(names(survey) == "q91")
+end_col <- which(names(survey) == "q97")
+
+encouragement = survey[, start_col:end_col]
+
+M=cor(encouragement)
+corrplot.mixed(M, lower.col = "purple", upper = "ellipse", number.cex = .7, tl.cex = 0.7)
+```
+
+The correlation for encouragement and support is quite interesting. It is a pretty even split of skinnier and larger ellipses. This makes it hard to determining where correlation and relevance really stands for encouragement and support and student satisfaction and more investigation might need to be made and possibly focusing on some questions in this section and not others. 
+
+
+## Growth and Development
+
+The growth and development section looks at seeing how students experience at the School of Business as contributed to their skills in areas like understanding themselves, solving numerical problems, working well with others, and much more. Again students are asked to answer on a 1 to 4 scale covering very much to very little. Another correlation plot will be created to analyze the potential relevance between growth and development and student satisfaction. 
+
+```{r}
+start_col <- which(names(survey) == "q101")
+end_col <- which(names(survey) == "q1015")
+
+growth = survey[, start_col:end_col]
+
+M=cor(growth)
+corrplot.mixed(M, lower.col = "purple", upper = "ellipse", number.cex = .7, tl.cex = 0.7)
+```
+
+This correlation plot is on of the larger one, which makes it even more surprising that so many of the ellipses seems to have high correlation. This is great support for the relevance of all questions asked under growth and development when it comes to student satisfaction and this is definitely a variable that should be further analyzed in the next stage of analysis. 
+
+
+## Campus Resource Utilization
+
+This section regarding campus resource utilization is broken down into 3 sections which covers how often a student uses a service, how satisfied they are with it, and how important it is to them. Again students are asked to answer on the 1-4 scale of very much to very little for resources like skills labs, career counseling, and child care. The below correlation plot was created to determining any potential relevance between campus resource utilization and student satisfaction. 
+
+```{r}
+start_col <- which(names(survey) == "q111.1")
+end_col <- which(names(survey) == "q1111.3")
+
+resource = survey[, start_col:end_col]
+
+
+M=cor(resource)
+corrplot.mixed(M, lower.col = "purple", upper = "ellipse", number.cex = .7, tl.cex = 0.7)
+```
+
+This section is another large correlation plot due to the three subsection in this section. While this correlation plot does show some highly correlated sections, a majority of them show a low correlation. With a majority of large ellipses indicating low correlation there is not much support for relevance between campus resources and student satisfaction. However, it may be worth looking into other ways to break down the subsections either by the specific resource and subsection questions to see if there is any relevance to be found in a smaller subsection. 
+
+
+## Retention
+
+Retention aims to understand what issues are likely of causing students to withdraw from school. Again answering on a 1-4 scale of very likely to not likely students are asked to answer how likely things like lack of finances and caring for dependents are at causing them to withdraw from school. The correlation plot below was analyzed to determining potential relevance between retention and student satisfaction. 
+
+```{r}
+start_col <- which(names(survey) == "q121")
+end_col <- which(names(survey) == "q125")
+
+retention = survey[, start_col:end_col]
+
+M=cor(retention)
+corrplot.mixed(M, lower.col = "purple", upper = "ellipse", number.cex = .7, tl.cex = 0.7)
+```
+
+Looking at the above correlation plot, all of the ellipses are much larger, indicating a lower correlation. This means there is not significant support of relevance between retention and student satisfaction. Considering the question this does make sense, it is asking for students to answer on the likelihood that things like financial hardship would cause them to leave school. If students are having financial hardships, they would typically have to leave school regardless of satisfaction so the lack of correlation is not surprising. 
+
+## How Students Pay for College
+
+The final section being analyzed for this survey is how students pay for college. Students are asked to indicate on a 1 to 3 scale being major source, minor source, and not a sources. Students are asked to rank thinks like grants, student loans, and public assistance on how much of a source they are in paying for tuition. A correlation plot was created to analyze potential relevance between how students pay for college and their satisfaction. 
+
+```{r}
+start_col <- which(names(survey) == "q131")
+end_col <- which(names(survey) == "q136")
+
+payment = survey[, start_col:end_col]
+
+M=cor(payment)
+corrplot.mixed(M, lower.col = "purple", upper = "ellipse", number.cex = .7, tl.cex = 0.7)
+```
+
+
+The final correlation plot covering how students pay for college, is also one with low correlation. An interesting thing to note though is that this is the first correlation plot where we see any negative correlation. However, this does not come as a total surprise because payment can be one of the hardest aspects of going to college, and if a student has to work through college or has to take out a significant amount of loans it can put stress on the student that negatively impacts their college experience. Despite this negative correlation all these ellipse are quite large indicating a low correlation which does not support relevance between how students pay for college and satisfaction. 
+
+
+# Project Questions
+
+First going to the correlation plots, seeing the high correlation across the entire growth and development correlation plot is quite intriguing. I think further investigation into students growth and development and their satisfaction is a must considering our preliminary findings. Additionally, I think combining this with student demographics could also be very important. To see if students change their answers from freshman to senior year, or if male answers vary drastically from females, would be very interesting. If growth and development is such an relevant aspect of student satisfaction, seeing which groups of the campus population are experiencing a significant amount of development compared to which ones which ones aren't can help the campus better focus their resources. If the school is able to improve upon the growth and development of struggling groups it can lead to overall improvement in student satisfaction which makes it a great research question. 
+
+Additionally, I think further investigation into the utilization of campus resources could be incredibly useful to the school. While the overall plot was not showing high correlation, the plot was quite large and had some specific sections with high correlation. If that correlation plot was to be broken down even further, there could be indication of highly correlated subsections. For example there could be 1 or 2 certain resources that correlate highly to student satisfaction while the others do not. Additionally, maybe one of the subsections like how often a student uses a resource is not highly correlated but how satisfied students are with it and how important it is to them is. Just because a resource inst something used frequently does not mean it is not important, and it would be a shame for the school to remove or defund resources important to the students because how often they used it had low correlation to student satisfaction. Further analyzing this section and the subsections could give the university a much better picture on what resources to focus on. 
+
