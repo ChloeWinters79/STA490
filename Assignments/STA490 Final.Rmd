@@ -1,0 +1,890 @@
+---
+title: "STA490: Student Satisfaction Anaysis"
+subtitle: '<img src="https://chloewinters79.github.io/STA490/Image/WCU.png" width=120 height=120>'
+author: 
+  - "Josie Gallop, Chloé Winters, Ava Destefano"
+date: '`r Sys.Date()`'
+output:
+  xaringan::moon_reader:
+    css: "https://chloewinters79.github.io/STA490/Presentation/Group%20Presentation/xaringan-themer.css"
+    nature:
+      slideNumberFormat: "%current%"
+      highlightStyle: github
+      highlightLines: true
+      ratio: 16:9
+      countIncrementalSlides: true
+      
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+if (!require("knitr")) {
+   install.packages("knitr")
+   library(knitr)
+}
+if (!require("leaflet")) {
+   install.packages("leaflet")
+   library(leaflet)
+}
+if (!require("EnvStats")) {
+   install.packages("EnvStats")
+   library(EnvStats)
+}
+if (!require("MASS")) {
+   install.packages("MASS")
+   library(MASS)
+}
+if (!require("phytools")) {
+   install.packages("phytools")
+   library(phytools)
+}
+if(!require("dplyr")) {
+   install.packages("dplyr")
+   library(dplyr)
+}
+if(!require("tidyverse")) {
+   install.packages("tidyverse")
+   library(tidyverse)
+}
+if(!require("GGally")) {
+   install.packages("GGally")
+   library(GGally)
+}
+if(!require("usdm")) {
+   install.packages("usdm")
+   library(usdm)
+}
+if(!require("car")) {
+   install.packages("car")
+   library(car)
+}
+if (!require("boot")) {
+   install.packages("boot")
+   library(boot)
+}
+if(!require("pander")) {
+   install.packages("pander")
+   library(pander)
+}
+if(!require("mice")) {
+   install.packages("mice")
+   library(mice)
+}
+if(!require("mlbench")) {
+   install.packages("mlbench")
+   library(mlbench)
+}
+if(!require("psych")) {
+   install.packages("psych")
+   library(psych)
+}
+if(!require("broom.mixed")) {
+   install.packages("broom.mixed")
+   library(broom.mixed)
+}
+if(!require("GGally")) {
+   install.packages("GGally")
+   library(GGally)
+}
+if(!require("caret")) {
+   install.packages("caret")
+   library(caret)
+}
+if (!require("pROC")) {
+   install.packages("pROC")
+   library(pROC)
+}
+knitr::opts_chunk$set(
+                  fig.width=3, 
+                  fig.height=3, 
+                  fig.retina=12,
+                  out.width = "100%",
+                  cache = FALSE,
+                  echo = TRUE,
+                  message = FALSE, 
+                  warning = FALSE,
+                  hiline = TRUE
+                  )
+```
+
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+  style_duo_accent(primary_color = "#410887",
+          secondary_color = "#9B51F5",
+          inverse_header_color = "#FFFFFF",
+          header_font_google = google_font("Martel"),
+          text_font_google = google_font("Lato"),
+          code_font_google = google_font("Fira Mono"))
+```
+
+
+```{r, include=FALSE}
+survey_missing = read.csv("https://chloewinters79.github.io/STA490/Data/at-risk-survey-data.csv", header = TRUE)
+survey <- na.omit(survey_missing)
+survey$q17_binary <- ifelse(survey$q17 == 1, 1, 0)
+###
+start_col <- which(names(survey) == "q41")
+end_col <- which(names(survey) == "q421")
+survey$avg_engagement <- rowMeans(survey[, start_col:end_col], na.rm = TRUE)
+###
+start_col <- which(names(survey) == "q51")
+end_col <- which(names(survey) == "q56")
+survey$avg_learning <- rowMeans(survey[, start_col:end_col], na.rm = TRUE)
+###
+start_col <- which(names(survey) == "q61")
+end_col <- which(names(survey) == "q63")
+survey$avg_writing <- rowMeans(survey[, start_col:end_col], na.rm = TRUE)
+###
+start_col <- which(names(survey) == "q81")
+end_col <- which(names(survey) == "q89")
+survey$avg_remedial <- rowMeans(survey[, start_col:end_col], na.rm = TRUE)
+###
+start_col <- which(names(survey) == "q91")
+end_col <- which(names(survey) == "q97")
+survey$avg_encouragement <- rowMeans(survey[, start_col:end_col], na.rm = TRUE)
+###
+start_col <- which(names(survey) == "q101")
+end_col <- which(names(survey) == "q1015")
+survey$avg_growth <- rowMeans(survey[, start_col:end_col], na.rm = TRUE)
+###
+start_col <- which(names(survey) == "q111.1")
+end_col <- which(names(survey) == "q1111.3")
+survey$avg_resource <- rowMeans(survey[, start_col:end_col], na.rm = TRUE)
+###
+start_col <- which(names(survey) == "q121")
+end_col <- which(names(survey) == "q125")
+survey$avg_retention <- rowMeans(survey[, start_col:end_col], na.rm = TRUE)
+###
+start_col <- which(names(survey) == "q131")
+end_col <- which(names(survey) == "q136")
+survey$avg_payment <- rowMeans(survey[, start_col:end_col], na.rm = TRUE)
+```
+
+
+
+
+# Agenda 
+
+<font size = 5>
+
+.pull-left[
+- Introduction
+
+   - Variables
+   
+   - Practical Questions
+   
+- Satisfaction Models with ROC analysis
+
+- Loyalty Models with ROC Analysis
+
+- PCA Analysis
+
+- Results 
+
+- Conclusion and Recommendations
+]
+<BR>
+<BR>
+</font>
+
+---
+
+# Introduction
+
+<font size = 6>
+
+.pull-left[
+ 
+ - Student survey results 
+
+- Collected from 2 northern universities. 
+
+- 332 observations of 123 variables. 
+
+- Focus on loyalty and satisfaction variables
+
+  ]
+<BR>
+<BR>
+</font>
+
+---
+## Variables 
+
+<font size = 5>
+
+.pull-left[
+- **q1** school year 
+- **q2** - asks if student started school here or elsewhere 
+- **q3** - Credit hours being taken this semester 
+- **q4** - engagement in learing 
+- **q5** - student learning style
+- **q6** - Writing and reading load 
+- **q7** - how challenging examinations have been for students
+- **q8** - remedial experience
+- **q9** - encouragement and support 
+- **q10** - growth and development
+- **q11** - how often students utilize campus resources
+- **q12** - Retention
+- **q13** - how students pay for school
+]
+
+.pull-right[
+- **q14** - when do students plan to take classes at the school again?
+- **q15** - GPA 
+- **q16** - total credit hours
+- **q17** - Would the student recomend the school of business? 
+- **q18** - how the student evaluates their experience
+- **q19** - age
+- **q20** - sex
+- **q21** - children?
+- **q22** - engilsh as a first language?
+- **q23** - International or foreign student?
+- **q24** - Race
+- **q25** - which of the 2 schools the student is attending
+    
+]
+
+<BR>
+<BR>
+</font>
+
+---
+
+
+## Practical Qustions
+
+<font size = 6>
+• What factors influence student satisfaction? <BR>
+<BR>
+• What factors influence student loyalty?  <BR>
+<BR>
+
+</font>
+
+---
+
+
+
+## Data Split 
+
+<font size = 6>
+
+• Spilt the data into two groups <BR>
+<BR>
+• 80% for training <BR>
+<BR>
+• 20% for testing <BR>
+<BR>
+• Training data will be used for building our models <BR>
+<BR>
+
+
+```{r, echo=FALSE, results='hide'}
+n <- dim(survey)[1]
+train.n <- round(0.8*n)
+train.id <- sample(1:n, train.n, replace = FALSE)
+
+train <- survey[train.id, ]
+test <- survey[-train.id, ]
+
+```
+
+```{r, echo=FALSE, results='hide'}
+TPR.FPR=function(pred){
+  prob.seq = seq(0, 1, length=50)  
+  pn = length(prob.seq)
+  true.lab = as.vector(train$q17_binary)
+  TPR = NULL
+  FPR = NULL
+  for (i in 1:pn){
+   pred.lab = as.vector(ifelse(pred > prob.seq[i],"1", "0"))
+   TPR[i] = length(which(true.lab=="1" & pred.lab=="1"))/length(which(true.lab=="1"))
+   FPR[i] = length(which(true.lab=="0" & pred.lab=="1"))/length(which(true.lab=="0"))
+  }
+ cbind(FPR = FPR, TPR = TPR)
+}
+```
+
+
+<!-- Start of Chloe's Slides  -->
+
+---
+
+class:inverse middle center
+name:model building
+
+
+# Modeling for Student Loyalty
+
+
+---
+
+
+## Modeling for Student Loyalty
+
+<font size = 6>
+
+• We have created several logistic regression models for the survey data with student loyalty (q17) as the binary response variable <BR>
+<BR>
+• Now, let's further investigate the statistical significance of certain variables <BR>
+<BR>
+
+</font>
+
+---
+
+class:inverse middle center
+name:model building
+
+
+# Loyalty Model Building Process
+
+
+---
+
+
+## Full Model 
+
+<font size = 6>
+
+• Includes all single question variables and avg variables for multiple part questions <BR>
+<BR>
+
+</font>
+
+---
+
+## Full Model (Part 1)
+
+<div class="scroll-table-container">
+
+```{r, echo=FALSE, results='asis'}
+
+library(kableExtra)
+
+full.model <- glm(q17_binary ~ q1 + q2 + q3 + q7 + q14 + q15 + q16 + q19 + q20 + q21 + q22 + q23 + q24 + q25 +
+                    avg_engagement + avg_learning + avg_writing + avg_remedial +
+                    avg_encouragement + avg_growth + avg_resource + avg_retention + avg_payment,
+                  family = binomial(link = "logit"),
+                  data = survey)
+
+full_coef <- summary(full.model)$coefficients
+
+```
+
+
+```{r, echo=FALSE, results='asis'}
+kable(full_coef[1:12, ], digits = 4) %>%
+  kable_styling(position = "center", full_width = FALSE)
+```
+---
+
+## Full Model (Part 2)
+
+```{r, echo=FALSE, results='asis'}
+kable(full_coef[13:nrow(full_coef), ], digits = 4) %>%
+  kable_styling(position = "center", full_width = FALSE)
+```
+
+---
+
+## Reduced Model 
+
+<font size = 6>
+
+• Includes all avg variables for multiple part questions <BR>
+<BR>
+
+</font>
+
+---
+
+## Reduced Model
+
+<div class="center-output">
+
+```{r, echo=FALSE}
+reduced.model = glm(q17_binary ~ avg_engagement + avg_learning + avg_writing + avg_remedial + avg_encouragement + avg_growth + avg_resource + avg_retention + avg_payment, 
+          family = binomial(link = "logit"),  
+          data = survey)  
+kable(summary(reduced.model)$coef)
+
+
+```
+
+
+---
+
+
+## Stepwise Model 
+
+<font size = 6>
+
+• Uses forward and backwards selection to build the model <BR>
+<BR>
+
+</font>
+
+---
+
+## Stepwise Model
+
+<div class="center-output">
+
+```{r, echo=FALSE}
+
+# Run stepwise selection (both directions)
+step.model <- stepAIC(full.model, direction = "both", trace = 0)
+
+# Display the final model's coefficients with kable
+kable(summary(step.model)$coefficients, digits = 4)
+
+
+```
+
+---
+
+## Cross Validation
+
+```{r, echo=FALSE}
+n <- nrow(survey)
+train.n <- round(0.8 * n)
+train.id <- sample(1:n, train.n, replace = FALSE)
+train <- survey[train.id, ]
+test <- survey[-train.id, ]
+
+k <- 10
+fold.size <- floor(nrow(train) / k)
+PE1 <- rep(0, k)
+PE2 <- rep(0, k)
+PE3 <- rep(0, k)
+
+for (i in 1:k) {
+  valid.id <- (fold.size * (i - 1) + 1):(fold.size * i)
+  valid <- train[valid.id, ]
+  train.dat <- train[-valid.id, ]
+  
+  # Full model
+  candidate01 <- glm(q17_binary ~ q1 + q2 + q3 + q7 + q14 + q15 + q16 + q19 + q20 + q21 + q22 + q23 + q24 + q25 +
+                       avg_engagement + avg_learning + avg_writing + avg_remedial + avg_encouragement +
+                       avg_growth + avg_resource + avg_retention + avg_payment,
+                     family = binomial(link = "logit"),
+                     data = train.dat)
+  
+  # Reduced model
+  candidate03 <- glm(q17_binary ~ avg_engagement + avg_learning + avg_writing + avg_remedial +
+                       avg_encouragement + avg_growth + avg_resource + avg_retention + avg_payment,
+                     family = binomial(link = "logit"),
+                     data = train.dat)
+  
+  # Stepwise model from full (forward selection)
+  candidate02 <- stepAIC(candidate01,
+                         scope = list(lower = formula(candidate03), upper = formula(candidate01)),
+                         direction = "forward",
+                         trace = 0)
+  
+  # Predict
+  pred01 <- predict(candidate01, newdata = valid, type = "response")
+  pred02 <- predict(candidate02, newdata = valid, type = "response")
+  pred03 <- predict(candidate03, newdata = valid, type = "response")
+  
+  # Classification
+  pre.outcome01 <- ifelse(pred01 > 0.5, 1, 0)
+  pre.outcome02 <- ifelse(pred02 > 0.5, 1, 0)
+  pre.outcome03 <- ifelse(pred03 > 0.5, 1, 0)
+  
+  # Prediction errors
+  PE1[i] <- mean(pre.outcome01 != valid$q17_binary)
+  PE2[i] <- mean(pre.outcome02 != valid$q17_binary)
+  PE3[i] <- mean(pre.outcome03 != valid$q17_binary)
+}
+
+# Average prediction errors
+avg.pe <- cbind(
+  Full_Model = mean(PE1),
+  Stepwise_Model = mean(PE2),
+  Reduced_Model = mean(PE3)
+)
+
+kable(avg.pe, caption = "Average prediction errors for Full, Stepwise, and Reduced Models")
+
+```
+---
+
+## Cross Validation
+
+<font size = 6>
+
+
+• We used 5 fold cross validation <BR>
+<BR>
+• Full and Stepwise models are both good <BR>
+<BR>
+• Reduced model is worse than Full and Stepwise <BR>
+<BR>
+• Stepwise and Forward selection are very simpler, Stepwise is simpler <BR>
+<BR>
+
+</font>
+
+
+---
+
+## ROC Curve
+
+
+```{r, echo=FALSE}
+pred.full = predict.glm(full.model, newdata = train, type = "response") 
+pred.reduced = predict.glm(reduced.model, newdata = train, type = "response")
+pred.step = predict.glm(step.model, newdata = train, type = "response")
+
+```
+
+
+```{r fig.width=8, fig.asp=0.45, fig.align="center", echo=FALSE}
+par(mar=c(3, 3, 1, 1))  
+par(mai = c(0.5, 0.5, 0.2, 0.2))
+ plot(TPR.FPR(pred.full)[,1], TPR.FPR(pred.full)[,2], 
+      type="l", col = 2, lty = 1, xlim = c(0,1), ylim = c(0,1),
+      xlab = "FPR: 1 - Specificity",
+      ylab ="TPR: Sensitivity",
+      main = "ROC Curves for the Three Candidate Models",
+      cex.main = 0.8,
+      col.main = "navy")
+ lines(TPR.FPR(pred.reduced)[,1], TPR.FPR(pred.reduced)[,2],  col=3, lty=2)
+ lines(TPR.FPR(pred.step)[,1], TPR.FPR(pred.step)[,2],  col=4, lty=3)    
+ 
+  category = train$q17_binary == "1"
+  ROCobj01 <- roc(category, as.vector(pred.full))
+  ROCobj02 <- roc(category, as.vector(pred.reduced))
+  ROCobj03 <- roc(category, as.vector(pred.step))
+  AUC01 = round(auc(ROCobj01),4)
+  AUC02 = round(auc(ROCobj02),4)
+  AUC03 = round(auc(ROCobj03),4)
+  
+  legend("bottomright", c(paste("Full model: AUC = ", AUC01), 
+                         paste("Reduced model: AUC =", AUC02),
+                         paste("Stepwise Model =", AUC03)),
+        col = 2:4, lty = 1:3, cex = 0.8, bty = "n")
+  
+```
+
+---
+
+## ROC Analysis 
+
+<font size = 6>
+
+
+• An AUC value closer to 1 indicates ideal performance <BR>
+<BR>
+• The reduced model has the lowest AUC <BR>
+<BR>
+• Stepwise and Forward selection have high AUC <BR>
+<BR>
+• Stepwise and Forward selection have very similar AUC, Stepwise is simpler <BR>
+<BR>
+• Stepwise is my suggestion for the final model <BR>
+<BR>
+</font>
+
+---
+
+
+class:inverse middle center
+name:Visual
+
+# Modling for Student Satisfaction
+---
+
+## Data Preparation
+
+<font size = 6>
+
+• Transform question 18 into a binomial variable <BR>
+<BR>
+• Split the data into training and testing data <BR>
+<BR>
+• 80% for training and 20% for testing <BR>
+<BR>
+
+
+```{r echo=FALSE, results='hide'}
+
+survey$q18 <- ifelse(survey$q18 %in% c(1, 2), 1, 
+                      ifelse(survey$q18 %in% c(3, 4), 0, NA))
+
+n <- dim(survey)[1]
+train.n <- round(0.8*n)
+train.id <- sample(1:n, train.n, replace = FALSE)
+
+train <- survey[train.id, ]
+test <- survey[-train.id, ]
+```
+
+</font>
+---
+# Full Model
+
+<font size = 6>
+• 11th question is not included <BR>
+<BR>
+•  Still using averages <BR>
+<BR>
+•  Only a few variables statistically significant, including GPA <BR>
+<BR>
+
+</font>
+
+```{r echo=FALSE, results='hide'}
+satisfaction.full.model = glm(q18 ~ q1 + q2 + q3 + q7 + q14 + q15 + q16 + q19 + q20 + q21 + q22 + q23 + q24 + q25 + avg_engagement + avg_learning + avg_writing + avg_remedial + avg_encouragement + avg_growth + avg_resource + avg_retention + avg_payment, 
+          family = binomial(link = "logit"),  
+          data = survey)  
+kable(summary(satisfaction.full.model)$coef, 
+      caption = "Full Model Summary of the Inferential Statistics")
+
+```
+---
+.pull-center[
+  ![](https://github.com/AvaDeSt/atrisksurvey/blob/main/Screenshot%202025-05-07%20193713.jpg?raw=true){.stretch}
+
+
+---
+# Reduced Model and Stepwise Model
+
+<font size = 6>
+• The reduced model contains the variables q15, q25, avg_encouragement, avg_growth, avg_retention <BR>
+<BR>
+•  The stepwise model uses forward selection <BR>
+<BR>
+```{r echo=FALSE, results='hide'}
+satisfaction.reduced.model = glm(q18 ~ q15 + q25 + avg_encouragement +avg_growth + avg_retention, 
+          family = binomial(link = "logit"),
+          data = survey) 
+kable(summary(satisfaction.reduced.model)$coef, 
+      caption = "Reduced Model Summary of the Inferential Statistics")
+
+
+satisfaction.fs.model = stepAIC(satisfaction.reduced.model, scope = list(lower=formula(satisfaction.reduced.model), upper=formula(satisfaction.full.model)),
+                      direction = "both",  
+                      trace = 0   
+                      )
+kable(summary(satisfaction.fs.model)$coef, 
+      caption="Final Model Summary of the Inferential Statistics")
+```
+
+
+</font>
+---
+# Final Model
+
+<font size = 6>
+• The full and stepwise model have the smallest predictive errors<BR>
+<BR>
+•  But the stepwise model is the most simple <BR>
+<BR>
+
+```{r echo=FALSE, results='hide'}
+
+k = 10
+fold.size = floor(dim(train)[1]/k)
+PE1 = rep(0,5)
+PE2 = rep(0,5)
+PE3 = rep(0,5)
+
+# Training and Testing Fold for the Models
+for(i in 1:k){
+  
+ valid.id = (fold.size*(i-1)+1):(fold.size*i)
+  valid = train[valid.id, ]
+  train.data = train[-valid.id,]
+  
+
+
+# Finding the predicted probabilities for each of the candidate models
+   pred.full = predict(satisfaction.full.model, newdata = valid, type = "response")
+   pred.reduced = predict(satisfaction.reduced.model, newdata = valid, type = "response")
+   pred.fs = predict(satisfaction.fs.model, newdata = valid, type = "response")
+   
+   pre.outcome01 = ifelse(as.vector(pred.full) > 0.5, "1", "0")
+   pre.outcome02 = ifelse(as.vector(pred.reduced) > 0.5, "1", "0")
+   pre.outcome03 = ifelse(as.vector(pred.fs) > 0.5, "1", "0")
+   
+   PE1[i] = sum(pre.outcome01 == valid$q17)/length(pred.full)
+   PE2[i] = sum(pre.outcome02 == valid$q17)/length(pred.reduced)
+   PE3[i] = sum(pre.outcome03 == valid$q17)/length(pred.fs)
+}
+
+# Finding the average predictive errors of each candidate model  
+avg.pe = cbind(PE1 = mean(PE1), PE2 = mean(PE2), PE3 = mean(PE3))
+kable(avg.pe, caption = "Average Predictive Errors of the Three Candidate Models") 
+```
+
+</font>
+
+| PE1 | PE2 | PE3 |
+|:---:|:---:|:---:|
+|0.769|0.792|0.769|
+---
+# ROC Analysis
+
+.pull-center[
+  ![](https://github.com/AvaDeSt/atrisksurvey/blob/main/roc_curves.jpg?raw=true){.stretch}
+  
+---
+
+
+## Data Set Adjustments
+
+<font size = 6> 
+
+• The data set orignially loads in with half missing observations <BR>
+<BR>
+• Determined to be a loading issue, all missing observations were removed <BR>
+<BR>
+• The varaibles that were questions with multiple subsections were averaged out <BR>
+<BR>
+• This includes, student learning styles, reading and writing load, payment method and more <BR>
+<BR>
+
+</font>
+
+---
+
+
+
+<!-- Start of Josie's Slides  -->
+
+
+## Further Investigation of Student Satisfaction Findings
+
+<font size = 6>
+
+• We have created several logistic regression models for the survey data with student satisfaction (q17) as the binary response variable <BR>
+<BR>
+• Now, let's further investigate the statistical significance of certain variables <BR>
+<BR>
+
+</font>
+
+---
+
+## Transfer Student Satisfaction
+
+<font size = 6>
+
+• My research question for this project was does satisfaction significantly differ between students who began their education at the particular college and transfer students? <BR>
+<BR>
+• Could transfer students have lower satisfaction due to the difficult and long transfer process? <BR>
+<BR>
+
+</font>
+---
+
+## Logisitic Regression Model Findings
+
+<font size = 6>
+
+• We will use q17 as our binary response variable (student satisfaction: yes or no) <BR>
+<BR>
+• Let's look back at the full model to start <BR>
+<BR>
+<font size = 6>
+
+
+---
+
+```{r echo=FALSE}
+full.model = glm(q17_binary ~ q1 +q2 + q3 +q61 + q62 + q63 + q7 +q81 +q82 + q83 + q84 + q85 + q86 + q87 + q88 +q89 + q91 + q92 + q92 + q93 + q94 + q95 + q96 + q97 + q101 +q102 + q103 +q104 +q105 + q106 + q107 + q108 + q109 + q1010 + q1011 + q1012 + q1013 + q1014 + q1015 +  q121 + q122 + q123 + q124 + q125 + q131 + q132 + q133 + q134 + q135 + q136 + q14 + q15 + q16 + q18 + q19 + q20 + q21 + q22 +q23 + q24 + q25, 
+          family = binomial(link = "logit"),  
+          data = survey)  
+kable(summary(full.model)$coef, 
+      caption = "Full Model Summary of the Inferential Statistics")
+```
+
+
+</font>
+
+---
+## Logisitic Regression Model Findings Continued
+
+<font size = 6>
+
+• We can see that the question regarding a student's transfer status, q2, was not statistically significant, p = 0.569. <BR>
+<BR>
+• This indicates that a student's transfer status is not statistically significant to their overall satisfaction <BR>
+<BR>
+• No signficant difference in satisfaction between transfer students and non-transfer students <BR>
+<BR>
+• q2 would not be used in either a reduced or a stepwise selection model <BR>
+<BR>
+
+
+</font>
+---
+
+## Other Notable Findings 
+
+<font size = 6>
+
+• Whether or not a student is an international student, q23, was also not statistically significant, p = 0.228. <BR>
+<BR>
+• Gender was also not statistically significant, p =  0.909. <BR>
+<BR>
+
+</font>
+
+
+---
+## Which Factors Were Significant?
+
+<font size = 6>
+
+• q19, a student's age group was statistically significant with a p-value of p = 0.036 <BR>
+<BR>
+• q 10.7 whether a student has skills with using computing and informational technology was statistically significant, p = 0.038 <BR>
+<BR>
+• q 6.2, the number of books which students read for their own enjoyment outside of class was statistically significant, p = 0.017. <BR>
+<BR>
+
+</font>
+
+---
+## Conclusions
+
+<font size = 6>
+
+• Factors like technology skills, age group, and how often a student reads, do have statistically significant effects on student satisfaction <BR>
+<BR>
+• These factors should be considered when creating future reduced or stepwise selection models like we did in our project <BR>
+<BR>
+• Some factors which did not show statistical significance were a bit surpirsing, so these could be investigated further <BR>
+<BR>
+
+
+</font>
+
+
+
+
+---
+name: Thank you
+class: inverse center middle
+
+# Thank you!
+
+Slides created using R packages:
+
+[**xaringan**](https://github.com/yihui/xaringan)<br>
+[**gadenbuie/xaringanthemer**](https://github.com/gadenbuie/xaringanthemer)<br>
+[**knitr**](http://yihui.name/knitr)<br>
+[**R Markdown**](https://rmarkdown.rstudio.com)<br>
+via <br>
+[**RStudio Desktop**](https://posit.co/download/rstudio-desktop/)
+
+
+
+

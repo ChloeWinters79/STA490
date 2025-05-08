@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>STA490: Student Satisfaction Anaysis</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Josie Gallop, Chloé Winters, Ava Destefano" />
+    <meta name="date" content="2025-05-07" />
+    <script src="STA490-Final_files/header-attrs/header-attrs.js"></script>
+    <script src="STA490-Final_files/kePrint/kePrint.js"></script>
+    <link href="STA490-Final_files/lightable/lightable.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://chloewinters79.github.io/STA490/Presentation/Group%20Presentation/xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# STA490: Student Satisfaction Anaysis
+]
+.subtitle[
+## <img src="https://chloewinters79.github.io/STA490/Image/WCU.png" width=120 height=120>
+]
+.author[
+### Josie Gallop, Chloé Winters, Ava Destefano
+]
+.date[
+### 2025-05-07
+]
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Agenda 
+
+&lt;font size = 5&gt;
+
+.pull-left[
+- Introduction
+
+   - Variables
+   
+   - Practical Questions
+   
+- Satisfaction Models with ROC analysis
+
+- Loyalty Models with ROC Analysis
+
+- PCA Analysis
+
+- Results 
+
+- Conclusion and Recommendations
+]
+&lt;BR&gt;
+&lt;BR&gt;
+&lt;/font&gt;
+
+---
+
+# Introduction
+
+&lt;font size = 6&gt;
+
+.pull-left[
+ 
+ - Student survey results 
+
+- Collected from 2 northern universities. 
+
+- 332 observations of 123 variables. 
+
+- Focus on loyalty and satisfaction variables
+
+  ]
+&lt;BR&gt;
+&lt;BR&gt;
+&lt;/font&gt;
+
+---
+## Variables 
+
+&lt;font size = 5&gt;
+
+.pull-left[
+- **q1** school year 
+- **q2** - asks if student started school here or elsewhere 
+- **q3** - Credit hours being taken this semester 
+- **q4** - engagement in learing 
+- **q5** - student learning style
+- **q6** - Writing and reading load 
+- **q7** - how challenging examinations have been for students
+- **q8** - remedial experience
+- **q9** - encouragement and support 
+- **q10** - growth and development
+- **q11** - how often students utilize campus resources
+- **q12** - Retention
+- **q13** - how students pay for school
+]
+
+.pull-right[
+- **q14** - when do students plan to take classes at the school again?
+- **q15** - GPA 
+- **q16** - total credit hours
+- **q17** - Would the student recomend the school of business? 
+- **q18** - how the student evaluates their experience
+- **q19** - age
+- **q20** - sex
+- **q21** - children?
+- **q22** - engilsh as a first language?
+- **q23** - International or foreign student?
+- **q24** - Race
+- **q25** - which of the 2 schools the student is attending
+    
+]
+
+&lt;BR&gt;
+&lt;BR&gt;
+&lt;/font&gt;
+
+---
+
+
+## Practical Qustions
+
+&lt;font size = 6&gt;
+• What factors influence student satisfaction? &lt;BR&gt;
+&lt;BR&gt;
+• What factors influence student loyalty?  &lt;BR&gt;
+&lt;BR&gt;
+
+&lt;/font&gt;
+
+---
+
+
+
+## Data Split 
+
+&lt;font size = 6&gt;
+
+• Spilt the data into two groups &lt;BR&gt;
+&lt;BR&gt;
+• 80% for training &lt;BR&gt;
+&lt;BR&gt;
+• 20% for testing &lt;BR&gt;
+&lt;BR&gt;
+• Training data will be used for building our models &lt;BR&gt;
+&lt;BR&gt;
+
+
+
+
+
+
+
+&lt;!-- Start of Chloe's Slides  --&gt;
+
+---
+
+class:inverse middle center
+name:model building
+
+
+# Modeling for Student Loyalty
+
+
+---
+
+
+## Modeling for Student Loyalty
+
+&lt;font size = 6&gt;
+
+• We have created several logistic regression models for the survey data with student loyalty (q17) as the binary response variable &lt;BR&gt;
+&lt;BR&gt;
+• Now, let's further investigate the statistical significance of certain variables &lt;BR&gt;
+&lt;BR&gt;
+
+&lt;/font&gt;
+
+---
+
+class:inverse middle center
+name:model building
+
+
+# Loyalty Model Building Process
+
+
+---
+
+
+## Full Model 
+
+&lt;font size = 6&gt;
+
+• Includes all single question variables and avg variables for multiple part questions &lt;BR&gt;
+&lt;BR&gt;
+
+&lt;/font&gt;
+
+---
+
+## Full Model (Part 1)
+
+&lt;div class="scroll-table-container"&gt;
+
+
+
+
+&lt;table class="table" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;  &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Std. Error &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; z value &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Pr(&amp;gt;&amp;amp;#124;z&amp;amp;#124;) &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.5949 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.8676 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.3821 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0172 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; q1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1191 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3254 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3662 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.7142 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; q2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1418 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.5018 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2827 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.7774 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; q3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.1032 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.6045 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.1707 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.8645 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; q7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0685 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1720 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3985 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.6903 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; q14 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.1295 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2871 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.4509 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.6520 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; q15 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4600 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2305 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.9956 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0460 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; q16 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.2303 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1874 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.2290 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2191 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; q19 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.1661 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1980 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.8391 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4014 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; q20 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0043 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4207 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0103 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9918 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; q21 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.5065 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.8920 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.6890 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0912 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; q22 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0382 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.7491 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0511 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9593 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+---
+
+## Full Model (Part 2)
+
+&lt;table class="table" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;  &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Std. Error &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; z value &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Pr(&amp;gt;&amp;amp;#124;z&amp;amp;#124;) &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; q23 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.2699 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.5454 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.1747 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.8613 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; q24 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.1055 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2314 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.4559 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.6485 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; q25 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -2.8470 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.6191 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -4.5984 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; avg_engagement &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.3438 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.6294 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.1350 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0328 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; avg_learning &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.3719 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4398 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.8457 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3977 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; avg_writing &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0232 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3361 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0690 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9450 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; avg_remedial &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.8946 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.5894 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.5177 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1291 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; avg_encouragement &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.8878 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.5190 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -3.6375 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0003 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; avg_growth &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.2140 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4124 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -2.9438 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0032 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; avg_resource &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.8016 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4634 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.7299 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0837 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; avg_retention &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.6135 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2949 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.0808 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0375 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; avg_payment &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.0897 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.7251 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.5027 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1329 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+## Reduced Model 
+
+&lt;font size = 6&gt;
+
+• Includes all avg variables for multiple part questions &lt;BR&gt;
+&lt;BR&gt;
+
+&lt;/font&gt;
+
+---
+
+## Reduced Model
+
+&lt;div class="center-output"&gt;
+
+
+|                  |   Estimate| Std. Error|    z value| Pr(&gt;&amp;#124;z&amp;#124;)|
+|:-----------------|----------:|----------:|----------:|------------------:|
+|(Intercept)       |  4.2192044|  1.7561998|  2.4024626|          0.0162851|
+|avg_engagement    |  1.3711692|  0.5000397|  2.7421205|          0.0061044|
+|avg_learning      | -0.4616486|  0.3524269| -1.3099131|          0.1902252|
+|avg_writing       | -0.2206449|  0.2642178| -0.8350872|          0.4036686|
+|avg_remedial      |  0.0530763|  0.4665322|  0.1137678|          0.9094219|
+|avg_encouragement | -2.3182741|  0.4550208| -5.0948747|          0.0000003|
+|avg_growth        | -0.4393832|  0.3201346| -1.3724952|          0.1699093|
+|avg_resource      |  0.7246292|  0.3885169|  1.8651166|          0.0621651|
+|avg_retention     |  0.3953444|  0.2351779|  1.6810444|          0.0927543|
+|avg_payment       | -0.2665375|  0.5671161| -0.4699876|          0.6383639|
+
+
+---
+
+
+## Stepwise Model 
+
+&lt;font size = 6&gt;
+
+• Uses forward and backwards selection to build the model &lt;BR&gt;
+&lt;BR&gt;
+
+&lt;/font&gt;
+
+---
+
+## Stepwise Model
+
+&lt;div class="center-output"&gt;
+
+
+|                  | Estimate| Std. Error| z value| Pr(&gt;&amp;#124;z&amp;#124;)|
+|:-----------------|--------:|----------:|-------:|------------------:|
+|(Intercept)       |  10.1762|     2.5876|  3.9327|             0.0001|
+|q15               |   0.4151|     0.2055|  2.0201|             0.0434|
+|q16               |  -0.2117|     0.1393| -1.5194|             0.1287|
+|q21               |  -1.2940|     0.7513| -1.7224|             0.0850|
+|q25               |  -2.8818|     0.5815| -4.9561|             0.0000|
+|avg_engagement    |   0.9806|     0.5326|  1.8410|             0.0656|
+|avg_remedial      |   0.8700|     0.5468|  1.5911|             0.1116|
+|avg_encouragement |  -1.9179|     0.4930| -3.8907|             0.0001|
+|avg_growth        |  -1.2310|     0.3921| -3.1394|             0.0017|
+|avg_resource      |   0.7995|     0.4471|  1.7882|             0.0737|
+|avg_retention     |   0.6035|     0.2782|  2.1697|             0.0300|
+|avg_payment       |  -0.9953|     0.6797| -1.4644|             0.1431|
+
+---
+
+## Cross Validation
+
+
+Table: Average prediction errors for Full, Stepwise, and Reduced Models
+
+| Full_Model| Stepwise_Model| Reduced_Model|
+|----------:|--------------:|-------------:|
+|  0.1538462|      0.1538462|     0.1384615|
+---
+
+## Cross Validation
+
+&lt;font size = 6&gt;
+
+
+• We used 5 fold cross validation &lt;BR&gt;
+&lt;BR&gt;
+• Full and Stepwise models are both good &lt;BR&gt;
+&lt;BR&gt;
+• Reduced model is worse than Full and Stepwise &lt;BR&gt;
+&lt;BR&gt;
+• Stepwise and Forward selection are very simpler, Stepwise is simpler &lt;BR&gt;
+&lt;BR&gt;
+
+&lt;/font&gt;
+
+
+---
+
+## ROC Curve
+
+
+
+
+
+&lt;img src="STA490-Final_files/figure-html/unnamed-chunk-11-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## ROC Analysis 
+
+&lt;font size = 6&gt;
+
+
+• An AUC value closer to 1 indicates ideal performance &lt;BR&gt;
+&lt;BR&gt;
+• The reduced model has the lowest AUC &lt;BR&gt;
+&lt;BR&gt;
+• Stepwise and Forward selection have high AUC &lt;BR&gt;
+&lt;BR&gt;
+• Stepwise and Forward selection have very similar AUC, Stepwise is simpler &lt;BR&gt;
+&lt;BR&gt;
+• Stepwise is my suggestion for the final model &lt;BR&gt;
+&lt;BR&gt;
+&lt;/font&gt;
+
+---
+
+
+class:inverse middle center
+name:Visual
+
+# Modling for Student Satisfaction
+---
+
+## Data Preparation
+
+&lt;font size = 6&gt;
+
+• Transform question 18 into a binomial variable &lt;BR&gt;
+&lt;BR&gt;
+• Split the data into training and testing data &lt;BR&gt;
+&lt;BR&gt;
+• 80% for training and 20% for testing &lt;BR&gt;
+&lt;BR&gt;
+
+
+
+
+&lt;/font&gt;
+---
+# Full Model
+
+&lt;font size = 6&gt;
+• 11th question is not included &lt;BR&gt;
+&lt;BR&gt;
+•  Still using averages &lt;BR&gt;
+&lt;BR&gt;
+•  Only a few variables statistically significant, including GPA &lt;BR&gt;
+&lt;BR&gt;
+
+&lt;/font&gt;
+
+
+---
+.pull-center[
+  ![](https://github.com/AvaDeSt/atrisksurvey/blob/main/Screenshot%202025-05-07%20193713.jpg?raw=true){.stretch}
+
+
+---
+# Reduced Model and Stepwise Model
+
+&lt;font size = 6&gt;
+• The reduced model contains the variables q15, q25, avg_encouragement, avg_growth, avg_retention &lt;BR&gt;
+&lt;BR&gt;
+•  The stepwise model uses forward selection &lt;BR&gt;
+&lt;BR&gt;
+
+
+
+&lt;/font&gt;
+---
+# Final Model
+
+&lt;font size = 6&gt;
+• The full and stepwise model have the smallest predictive errors&lt;BR&gt;
+&lt;BR&gt;
+•  But the stepwise model is the most simple &lt;BR&gt;
+&lt;BR&gt;
+
+
+
+&lt;/font&gt;
+
+| PE1 | PE2 | PE3 |
+|:---:|:---:|:---:|
+|0.769|0.792|0.769|
+---
+# ROC Analysis
+
+.pull-center[
+  ![](https://github.com/AvaDeSt/atrisksurvey/blob/main/roc_curves.jpg?raw=true){.stretch}
+  
+---
+
+
+## Data Set Adjustments
+
+&lt;font size = 6&gt; 
+
+• The data set orignially loads in with half missing observations &lt;BR&gt;
+&lt;BR&gt;
+• Determined to be a loading issue, all missing observations were removed &lt;BR&gt;
+&lt;BR&gt;
+• The varaibles that were questions with multiple subsections were averaged out &lt;BR&gt;
+&lt;BR&gt;
+• This includes, student learning styles, reading and writing load, payment method and more &lt;BR&gt;
+&lt;BR&gt;
+
+&lt;/font&gt;
+
+---
+
+
+
+&lt;!-- Start of Josie's Slides  --&gt;
+
+
+## Further Investigation of Student Satisfaction Findings
+
+&lt;font size = 6&gt;
+
+• We have created several logistic regression models for the survey data with student satisfaction (q17) as the binary response variable &lt;BR&gt;
+&lt;BR&gt;
+• Now, let's further investigate the statistical significance of certain variables &lt;BR&gt;
+&lt;BR&gt;
+
+&lt;/font&gt;
+
+---
+
+## Transfer Student Satisfaction
+
+&lt;font size = 6&gt;
+
+• My research question for this project was does satisfaction significantly differ between students who began their education at the particular college and transfer students? &lt;BR&gt;
+&lt;BR&gt;
+• Could transfer students have lower satisfaction due to the difficult and long transfer process? &lt;BR&gt;
+&lt;BR&gt;
+
+&lt;/font&gt;
+---
+
+## Logisitic Regression Model Findings
+
+&lt;font size = 6&gt;
+
+• We will use q17 as our binary response variable (student satisfaction: yes or no) &lt;BR&gt;
+&lt;BR&gt;
+• Let's look back at the full model to start &lt;BR&gt;
+&lt;BR&gt;
+&lt;font size = 6&gt;
+
+
+---
+
+
+Table: Full Model Summary of the Inferential Statistics
+
+|            |   Estimate| Std. Error|    z value| Pr(&gt;&amp;#124;z&amp;#124;)|
+|:-----------|----------:|----------:|----------:|------------------:|
+|(Intercept) | 25.4722831| 16.4189777|  1.5513928|          0.1208076|
+|q1          |  0.0737232|  0.6893517|  0.1069457|          0.9148321|
+|q2          | -0.7338168|  1.0635023| -0.6900002|          0.4901940|
+|q3          | -0.1385217|  1.6956059| -0.0816945|          0.9348896|
+|q61         |  0.6015650|  0.7464637|  0.8058865|          0.4203083|
+|q62         |  1.6120928|  0.7123427|  2.2630859|          0.0236304|
+|q63         | -0.8026863|  0.5821203| -1.3789012|          0.1679252|
+|q7          |  0.3462524|  0.4521742|  0.7657500|          0.4438251|
+|q81         | -0.3551840|  0.8162407| -0.4351461|          0.6634564|
+|q82         |  5.4840049|  1.9548267|  2.8053662|          0.0050259|
+|q83         |  2.5259313|  1.2688056|  1.9907947|          0.0465035|
+|q84         | -3.5445935|  1.6083133| -2.2039198|          0.0275300|
+|q85         |  0.4418764|  0.8226011|  0.5371697|          0.5911504|
+|q86         | -0.6706903|  1.1046787| -0.6071361|          0.5437606|
+|q87         |  0.8398276|  1.2293947|  0.6831228|          0.4945292|
+|q88         | -0.5020530|  0.6434350| -0.7802699|          0.4352320|
+|q89         | -0.1066515|  1.2621769| -0.0844980|          0.9326605|
+|q91         |  0.6771104|  0.7705823|  0.8786997|          0.3795641|
+|q92         |  1.1984006|  0.9195811|  1.3032027|          0.1925056|
+|q93         | -0.3409025|  0.9151823| -0.3724968|          0.7095230|
+|q94         |  2.5744605|  0.9709500|  2.6514862|          0.0080138|
+|q95         | -2.9600449|  1.1734096| -2.5226015|          0.0116490|
+|q96         | -3.2448750|  1.3437103| -2.4148621|          0.0157412|
+|q97         | -0.1407335|  0.6693475| -0.2102548|          0.8334688|
+|q101        | -1.4860275|  1.2668111| -1.1730459|          0.2407774|
+|q102        | -0.2419747|  0.8862602| -0.2730289|          0.7848310|
+|q103        |  1.9472283|  1.3056722|  1.4913607|          0.1358668|
+|q104        | -1.2328903|  1.0662682| -1.1562667|          0.2475721|
+|q105        | -1.5015228|  1.2818033| -1.1714144|          0.2414323|
+|q106        |  0.0472141|  0.9684276|  0.0487534|          0.9611158|
+|q107        |  3.0764872|  1.2482525|  2.4646353|          0.0137153|
+|q108        |  0.4979380|  0.9727539|  0.5118848|          0.6087316|
+|q109        | -0.6710769|  0.9073574| -0.7395949|          0.4595458|
+|q1010       |  0.2517201|  1.0384105|  0.2424090|          0.8084633|
+|q1011       | -3.0156028|  1.1311092| -2.6660580|          0.0076746|
+|q1012       | -0.0180928|  0.9262325| -0.0195338|          0.9844153|
+|q1013       |  1.7437463|  0.9356864|  1.8636011|          0.0623777|
+|q1014       | -0.8649359|  0.9489314| -0.9114840|          0.3620404|
+|q1015       |  1.5052604|  0.7855769|  1.9161209|          0.0553497|
+|q121        | -0.2067404|  0.6195052| -0.3337186|          0.7385919|
+|q122        |  0.4238853|  0.7834023|  0.5410825|          0.5884507|
+|q123        | -0.5994390|  0.7146214| -0.8388203|          0.4015702|
+|q124        |  0.3794085|  0.6403566|  0.5924956|          0.5535188|
+|q125        |  2.2384206|  0.8997404|  2.4878517|          0.0128517|
+|q131        |  0.2267842|  0.7876355|  0.2879304|          0.7734000|
+|q132        | -0.3743121|  0.8145558| -0.4595291|          0.6458542|
+|q133        | -0.6924212|  1.0302323| -0.6721020|          0.5015188|
+|q134        |  0.2733378|  0.8279304|  0.3301459|          0.7412897|
+|q135        | -0.8998329|  0.6779328| -1.3273187|          0.1844033|
+|q136        |  0.0097909|  1.2194620|  0.0080289|          0.9935940|
+|q14         | -0.7792689|  1.0797455| -0.7217154|          0.4704695|
+|q15         |  1.8481117|  0.8255286|  2.2387011|          0.0251754|
+|q16         | -0.8074214|  0.4913886| -1.6431424|          0.1003535|
+|q18         |  8.2982935|  2.2234774|  3.7321241|          0.0001899|
+|q19         | -1.7156620|  0.8045798| -2.1323701|          0.0329764|
+|q20         | -1.1636157|  1.3462442| -0.8643422|          0.3873999|
+|q21         | -7.0157842|  3.3377405| -2.1019562|          0.0355571|
+|q22         |  3.9095372|  2.7588308|  1.4170993|          0.1564539|
+|q23         | -4.5705623|  3.9300937| -1.1629652|          0.2448436|
+|q24         | -1.2402481|  0.5809392| -2.1349017|          0.0327690|
+|q25         | -2.3883635|  1.4148896| -1.6880211|          0.0914072|
+
+
+&lt;/font&gt;
+
+---
+## Logisitic Regression Model Findings Continued
+
+&lt;font size = 6&gt;
+
+• We can see that the question regarding a student's transfer status, q2, was not statistically significant, p = 0.569. &lt;BR&gt;
+&lt;BR&gt;
+• This indicates that a student's transfer status is not statistically significant to their overall satisfaction &lt;BR&gt;
+&lt;BR&gt;
+• No signficant difference in satisfaction between transfer students and non-transfer students &lt;BR&gt;
+&lt;BR&gt;
+• q2 would not be used in either a reduced or a stepwise selection model &lt;BR&gt;
+&lt;BR&gt;
+
+
+&lt;/font&gt;
+---
+
+## Other Notable Findings 
+
+&lt;font size = 6&gt;
+
+• Whether or not a student is an international student, q23, was also not statistically significant, p = 0.228. &lt;BR&gt;
+&lt;BR&gt;
+• Gender was also not statistically significant, p =  0.909. &lt;BR&gt;
+&lt;BR&gt;
+
+&lt;/font&gt;
+
+
+---
+## Which Factors Were Significant?
+
+&lt;font size = 6&gt;
+
+• q19, a student's age group was statistically significant with a p-value of p = 0.036 &lt;BR&gt;
+&lt;BR&gt;
+• q 10.7 whether a student has skills with using computing and informational technology was statistically significant, p = 0.038 &lt;BR&gt;
+&lt;BR&gt;
+• q 6.2, the number of books which students read for their own enjoyment outside of class was statistically significant, p = 0.017. &lt;BR&gt;
+&lt;BR&gt;
+
+&lt;/font&gt;
+
+---
+## Conclusions
+
+&lt;font size = 6&gt;
+
+• Factors like technology skills, age group, and how often a student reads, do have statistically significant effects on student satisfaction &lt;BR&gt;
+&lt;BR&gt;
+• These factors should be considered when creating future reduced or stepwise selection models like we did in our project &lt;BR&gt;
+&lt;BR&gt;
+• Some factors which did not show statistical significance were a bit surpirsing, so these could be investigated further &lt;BR&gt;
+&lt;BR&gt;
+
+
+&lt;/font&gt;
+
+
+
+
+---
+name: Thank you
+class: inverse center middle
+
+# Thank you!
+
+Slides created using R packages:
+
+[**xaringan**](https://github.com/yihui/xaringan)&lt;br&gt;
+[**gadenbuie/xaringanthemer**](https://github.com/gadenbuie/xaringanthemer)&lt;br&gt;
+[**knitr**](http://yihui.name/knitr)&lt;br&gt;
+[**R Markdown**](https://rmarkdown.rstudio.com)&lt;br&gt;
+via &lt;br&gt;
+[**RStudio Desktop**](https://posit.co/download/rstudio-desktop/)
+
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"slideNumberFormat": "%current%",
+"highlightStyle": "github",
+"highlightLines": true,
+"ratio": "16:9",
+"countIncrementalSlides": true
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
