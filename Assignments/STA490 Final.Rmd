@@ -629,7 +629,6 @@ kable(Accuracy, caption="Actual Accuracy of the Final Model")
 
 </font>
 
----
 
 ---
 
