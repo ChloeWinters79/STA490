@@ -4,7 +4,7 @@
     <title>STA490: Student Satisfaction Anaysis</title>
     <meta charset="utf-8" />
     <meta name="author" content="Josie Gallop, Chloé Winters, Ava Destefano" />
-    <meta name="date" content="2025-05-07" />
+    <meta name="date" content="2025-05-08" />
     <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
 document.addEventListener('DOMContentLoaded', function(e) {
@@ -279,7 +279,7 @@ class: center, middle, inverse, title-slide
 ### Josie Gallop, Chloé Winters, Ava Destefano
 ]
 .date[
-### 2025-05-07
+### 2025-05-08
 ]
 
 ---
@@ -311,7 +311,7 @@ class: center, middle, inverse, title-slide
 
 - Loyalty Models with ROC Analysis
 
-- PCA Analysis
+- Transfer Student Satisfaction
 
 - Results 
 
@@ -395,6 +395,7 @@ class: center, middle, inverse, title-slide
 &lt;BR&gt;
 
 &lt;/font&gt;
+
 
 ---
 
@@ -762,7 +763,7 @@ Table: Average prediction errors for Full, Stepwise, and Reduced Models
 
 | Full_Model| Stepwise_Model| Reduced_Model|
 |----------:|--------------:|-------------:|
-|  0.1615385|      0.1615385|     0.1769231|
+|  0.1269231|      0.1269231|     0.1769231|
 ---
 
 ## Cross Validation
@@ -816,7 +817,21 @@ Table: Average prediction errors for Full, Stepwise, and Reduced Models
 &lt;/font&gt;
 
 ---
+# Results
 
+&lt;font size = 6&gt;
+• Stepswise model is our chosen final model &lt;BR&gt;
+&lt;BR&gt;
+•  The final model has an accuracy of 0.9242 &lt;BR&gt;
+&lt;BR&gt;
+• Factors with most probable impact on student satisfaction: GPA, Credit Hours, Children in House, School, Student Growth, Student Encouragement, and Student Engagement, Student Growth, Remedial Experience, Campus Resources, and How Students Pay for School.  &lt;BR&gt;
+&lt;BR&gt;
+
+&lt;/font&gt;
+
+---
+
+---
 
 class:inverse middle center
 name:Visual
@@ -825,7 +840,6 @@ name:Visual
 ---
 
 ## Data Preparation
-
 &lt;font size = 6&gt;
 
 • Transform question 18 into a binomial variable &lt;BR&gt;
@@ -843,8 +857,6 @@ name:Visual
 # Full Model
 
 &lt;font size = 6&gt;
-• 11th question is not included &lt;BR&gt;
-&lt;BR&gt;
 •  Still using averages &lt;BR&gt;
 &lt;BR&gt;
 •  Only a few variables statistically significant, including GPA &lt;BR&gt;
@@ -859,24 +871,43 @@ name:Visual
 
 
 ---
-# Reduced Model and Stepwise Model
+&lt;font size = 5&gt;
 
-&lt;font size = 6&gt;
-• The reduced model contains the variables q15, q25, avg_encouragement, avg_growth, avg_retention &lt;BR&gt;
+.pull-left[
+## Reduced Model
+- Question 15
+- Question 25
+- avg_encouragement
+- avg_growth
+- avg_retention
+]
+
+.pull-right[
+## Stepwise model
+- Question 15
+- Question 16
+- Question 19
+- Question 25
+- avg_encouragement
+- avg_growth
+- avg_retention
+- avg_growth
+]
+
 &lt;BR&gt;
-•  The stepwise model uses forward selection &lt;BR&gt;
 &lt;BR&gt;
+&lt;/font&gt;
 
 
 
 &lt;/font&gt;
 ---
-# Final Model
+# Predictive Errors
 
 &lt;font size = 6&gt;
 • The full and stepwise model have the smallest predictive errors&lt;BR&gt;
 &lt;BR&gt;
-•  But the stepwise model is the most simple &lt;BR&gt;
+•  But the stepwise model is the most simple of the two&lt;BR&gt;
 &lt;BR&gt;
 
 
@@ -891,21 +922,15 @@ name:Visual
 
 .pull-center[
   ![](https://github.com/AvaDeSt/atrisksurvey/blob/main/roc_curves.jpg?raw=true){.stretch}
-  
 ---
+# Results
 
-
-## Data Set Adjustments
-
-&lt;font size = 6&gt; 
-
-• The data set originally loads in with half missing observations &lt;BR&gt;
+&lt;font size = 6&gt;
+• Stepswise model is our chosen final model &lt;BR&gt;
 &lt;BR&gt;
-• Determined to be a loading issue, all missing observations were removed &lt;BR&gt;
+•  The final model has an accuracy of 0.6818 &lt;BR&gt;
 &lt;BR&gt;
-• The varaibles that were questions with multiple subsections were averaged out &lt;BR&gt;
-&lt;BR&gt;
-• This includes, student learning styles, reading and writing load, payment method and more &lt;BR&gt;
+• Factors with most probable impact on student satisfaction: GPA, Student Growth, Student Encouragement, and Student retention, age, and school  &lt;BR&gt;
 &lt;BR&gt;
 
 &lt;/font&gt;
@@ -925,7 +950,7 @@ name:Visual
 
 &lt;font size = 6&gt;
 
-• We have created several logisitic regression models for the survey data with student satisfaction (q17) as the binary response variable &lt;BR&gt;
+• We have created several logistic regression models for the survey data with student satisfaction (q17) as the binary response variable &lt;BR&gt;
 &lt;BR&gt;
 • Now, let&#39;s further investigate the statistical significance of certain variables &lt;BR&gt;
 &lt;BR&gt;
@@ -1036,7 +1061,7 @@ name:Visual
 
 &lt;font size = 6&gt;
 
-• We looked at three logisitic regression models: full, reduced, and stepwise &lt;BR&gt;
+• We looked at three logistic regression models: full, reduced, and stepwise &lt;BR&gt;
 &lt;BR&gt;
 • Of these three the stepwise model showed the best performance for both student satisfaction and student loyalty &lt;BR&gt;
 &lt;BR&gt;
@@ -1102,6 +1127,20 @@ name:Visual
 • These variables are worth looking into further to understand which factors play the biggest role in a student&#39;s loyalty and satisfaction. 
 
 &lt;/font&gt;
+
+---
+# Future Recommendations
+
+&lt;font size = 6&gt;
+• Further explore each individual variable &lt;BR&gt;
+&lt;BR&gt;
+•  Make question 11 easier to work with &lt;BR&gt;
+&lt;BR&gt;
+• Explore different modeling options  &lt;BR&gt;
+&lt;BR&gt;
+
+&lt;/font&gt;
+
 
 ---
 name: Thank you

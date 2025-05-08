@@ -179,7 +179,7 @@ survey$avg_payment <- rowMeans(survey[, start_col:end_col], na.rm = TRUE)
 
 - Loyalty Models with ROC Analysis
 
-- PCA Analysis
+- Transfer Student Satisfaction
 
 - Results 
 
@@ -263,6 +263,7 @@ survey$avg_payment <- rowMeans(survey[, start_col:end_col], na.rm = TRUE)
 <BR>
 
 </font>
+
 
 ---
 
@@ -584,6 +585,12 @@ par(mai = c(0.5, 0.5, 0.2, 0.2))
                          paste("Stepwise Model =", AUC03)),
         col = 2:4, lty = 1:3, cex = 0.8, bty = "n")
   
+  pred.reduced = predict(step.model, newdata = test, type = "response")
+pred.reduced.outcome = ifelse(as.vector(pred.reduced) > 0.5, "1", "0")
+
+Accuracy = sum(pred.reduced.outcome == test$q17_binary)/length(pred.reduced)
+kable(Accuracy, caption="Actual Accuracy of the Final Model")
+  
 ```
 
 
@@ -610,7 +617,21 @@ par(mai = c(0.5, 0.5, 0.2, 0.2))
 </font>
 
 ---
+# Results
 
+<font size = 6>
+• Stepswise model is our chosen final model <BR>
+<BR>
+•  The final model has an accuracy of 0.9242 <BR>
+<BR>
+• Factors with most probable impact on student satisfaction: GPA, Credit Hours, Children in House, School, Student Growth, Student Encouragement, and Student Engagement, Student Growth, Remedial Experience, Campus Resources, and How Students Pay for School.  <BR>
+<BR>
+
+</font>
+
+---
+
+---
 
 class:inverse middle center
 name:Visual
@@ -619,7 +640,6 @@ name:Visual
 ---
 
 ## Data Preparation
-
 <font size = 6>
 
 • Transform question 18 into a binomial variable <BR>
@@ -631,6 +651,7 @@ name:Visual
 
 
 ```{r echo=FALSE, results='hide'}
+
 
 survey$q18 <- ifelse(survey$q18 %in% c(1, 2), 1, 
                       ifelse(survey$q18 %in% c(3, 4), 0, NA))
@@ -648,8 +669,6 @@ test <- survey[-train.id, ]
 # Full Model
 
 <font size = 6>
-• 11th question is not included <BR>
-<BR>
 •  Still using averages <BR>
 <BR>
 •  Only a few variables statistically significant, including GPA <BR>
@@ -671,13 +690,32 @@ kable(summary(satisfaction.full.model)$coef,
 
 
 ---
-# Reduced Model and Stepwise Model
+<font size = 5>
 
-<font size = 6>
-• The reduced model contains the variables q15, q25, avg_encouragement, avg_growth, avg_retention <BR>
+.pull-left[
+## Reduced Model
+- Question 15
+- Question 25
+- avg_encouragement
+- avg_growth
+- avg_retention
+]
+
+.pull-right[
+## Stepwise model
+- Question 15
+- Question 16
+- Question 19
+- Question 25
+- avg_encouragement
+- avg_growth
+- avg_retention
+- avg_growth
+]
+
 <BR>
-•  The stepwise model uses forward selection <BR>
 <BR>
+</font>
 ```{r echo=FALSE, results='hide'}
 satisfaction.reduced.model = glm(q18 ~ q15 + q25 + avg_encouragement +avg_growth + avg_retention, 
           family = binomial(link = "logit"),
@@ -697,12 +735,12 @@ kable(summary(satisfaction.fs.model)$coef,
 
 </font>
 ---
-# Final Model
+# Predictive Errors
 
 <font size = 6>
 • The full and stepwise model have the smallest predictive errors<BR>
 <BR>
-•  But the stepwise model is the most simple <BR>
+•  But the stepwise model is the most simple of the two<BR>
 <BR>
 
 ```{r echo=FALSE, results='hide'}
@@ -751,21 +789,15 @@ kable(avg.pe, caption = "Average Predictive Errors of the Three Candidate Models
 
 .pull-center[
   ![](https://github.com/AvaDeSt/atrisksurvey/blob/main/roc_curves.jpg?raw=true){.stretch}
-  
 ---
+# Results
 
-
-## Data Set Adjustments
-
-<font size = 6> 
-
-• The data set originally loads in with half missing observations <BR>
+<font size = 6>
+• Stepswise model is our chosen final model <BR>
 <BR>
-• Determined to be a loading issue, all missing observations were removed <BR>
+•  The final model has an accuracy of 0.6818 <BR>
 <BR>
-• The varaibles that were questions with multiple subsections were averaged out <BR>
-<BR>
-• This includes, student learning styles, reading and writing load, payment method and more <BR>
+• Factors with most probable impact on student satisfaction: GPA, Student Growth, Student Encouragement, and Student retention, age, and school  <BR>
 <BR>
 
 </font>
@@ -785,7 +817,7 @@ name:Visual
 
 <font size = 6>
 
-• We have created several logisitic regression models for the survey data with student satisfaction (q17) as the binary response variable <BR>
+• We have created several logistic regression models for the survey data with student satisfaction (q17) as the binary response variable <BR>
 <BR>
 • Now, let's further investigate the statistical significance of certain variables <BR>
 <BR>
@@ -902,7 +934,7 @@ name:Visual
 
 <font size = 6>
 
-• We looked at three logisitic regression models: full, reduced, and stepwise <BR>
+• We looked at three logistic regression models: full, reduced, and stepwise <BR>
 <BR>
 • Of these three the stepwise model showed the best performance for both student satisfaction and student loyalty <BR>
 <BR>
@@ -968,6 +1000,20 @@ name:Visual
 • These variables are worth looking into further to understand which factors play the biggest role in a student's loyalty and satisfaction. 
 
 </font>
+
+---
+# Future Recommendations
+
+<font size = 6>
+• Further explore each individual variable <BR>
+<BR>
+•  Make question 11 easier to work with <BR>
+<BR>
+• Explore different modeling options  <BR>
+<BR>
+
+</font>
+
 
 ---
 name: Thank you
