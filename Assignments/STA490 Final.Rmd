@@ -266,13 +266,27 @@ survey$avg_payment <- rowMeans(survey[, start_col:end_col], na.rm = TRUE)
 
 ---
 
+## Additional Variables
 
+<font size = 6>
+• Some questions in the survey resulted in several variables  <BR>
+<BR>
+• The decision was made to condense several variables down into their average <BR>
+<BR>
+• This process created 9 averaged variables named, avg_engagement, avg_learning, avg_writing, avg_remedial, avg_encouragement, avg_growth, avg_resource, avg_retention, and avg_payment <BR>
+<BR>
+
+</font>
+
+
+
+---
 
 ## Data Split 
 
 <font size = 6>
 
-• Spilt the data into two groups <BR>
+• Split the data into two groups <BR>
 <BR>
 • 80% for training <BR>
 <BR>
@@ -741,7 +755,7 @@ kable(avg.pe, caption = "Average Predictive Errors of the Three Candidate Models
 
 <font size = 6> 
 
-• The data set orignially loads in with half missing observations <BR>
+• The data set originally loads in with half missing observations <BR>
 <BR>
 • Determined to be a loading issue, all missing observations were removed <BR>
 <BR>
@@ -755,15 +769,19 @@ kable(avg.pe, caption = "Average Predictive Errors of the Three Candidate Models
 ---
 
 
+class:inverse middle center
+name:Visual
 
-<!-- Start of Josie's Slides  -->
+# Practical Interpretation of Our Findings
 
 
-## Further Investigation of Student Satisfaction Findings
+---
+
+## Further Investigation of our Findings
 
 <font size = 6>
 
-• We have created several logistic regression models for the survey data with student satisfaction (q17) as the binary response variable <BR>
+• We have created several logisitic regression models for the survey data with student satisfaction (q17) as the binary response variable <BR>
 <BR>
 • Now, let's further investigate the statistical significance of certain variables <BR>
 <BR>
@@ -776,7 +794,7 @@ kable(avg.pe, caption = "Average Predictive Errors of the Three Candidate Models
 
 <font size = 6>
 
-• My research question for this project was does satisfaction significantly differ between students who began their education at the particular college and transfer students? <BR>
+• One question I had for this project was does loyalty/satisfaction significantly differ between transfer and non-transfer students? <BR>
 <BR>
 • Could transfer students have lower satisfaction due to the difficult and long transfer process? <BR>
 <BR>
@@ -788,16 +806,15 @@ kable(avg.pe, caption = "Average Predictive Errors of the Three Candidate Models
 
 <font size = 6>
 
-• We will use q17 as our binary response variable (student satisfaction: yes or no) <BR>
+• We have used q17 as our binary response variable (student satisfaction: yes or no) <BR>
 <BR>
 • Let's look back at the full model to start <BR>
 <BR>
 <font size = 6>
 
 
----
 
-```{r echo=FALSE}
+```{r echo=FALSE, results = "hide"}
 full.model = glm(q17_binary ~ q1 +q2 + q3 +q61 + q62 + q63 + q7 +q81 +q82 + q83 + q84 + q85 + q86 + q87 + q88 +q89 + q91 + q92 + q92 + q93 + q94 + q95 + q96 + q97 + q101 +q102 + q103 +q104 +q105 + q106 + q107 + q108 + q109 + q1010 + q1011 + q1012 + q1013 + q1014 + q1015 +  q121 + q122 + q123 + q124 + q125 + q131 + q132 + q133 + q134 + q135 + q136 + q14 + q15 + q16 + q18 + q19 + q20 + q21 + q22 +q23 + q24 + q25, 
           family = binomial(link = "logit"),  
           data = survey)  
@@ -809,30 +826,29 @@ kable(summary(full.model)$coef,
 </font>
 
 ---
-## Logisitic Regression Model Findings Continued
+## Transfer Students vs Non-Transfer Students
 
 <font size = 6>
 
-• We can see that the question regarding a student's transfer status, q2, was not statistically significant, p = 0.569. <BR>
+• We saw that the question regarding a student's transfer status, q2, was not statistically significant to loyalty, p = 0.569 <BR>
 <BR>
-• This indicates that a student's transfer status is not statistically significant to their overall satisfaction <BR>
+• Neither was it statistically significant to satisfaction, p = 0.259 <BR>
 <BR>
-• No signficant difference in satisfaction between transfer students and non-transfer students <BR>
+• No significant difference in satisfaction between transfer students and non-transfer students <BR>
 <BR>
-• q2 would not be used in either a reduced or a stepwise selection model <BR>
 <BR>
 
 
 </font>
 ---
 
-## Other Notable Findings 
+## Non-Significant Factors
 
 <font size = 6>
 
-• Whether or not a student is an international student, q23, was also not statistically significant, p = 0.228. <BR>
+• Whether or not a student is an international student, q23, was also not statistically significant to loyalty, p = 0.228, or to satisfaction, p = 0.657 <BR>
 <BR>
-• Gender was also not statistically significant, p =  0.909. <BR>
+• Gender, q20, was also not statistically significant to loyalty, p =  0.909, or to satisfaction, p = 0.982 <BR>
 <BR>
 
 </font>
@@ -843,17 +859,17 @@ kable(summary(full.model)$coef,
 
 <font size = 6>
 
-• q19, a student's age group was statistically significant with a p-value of p = 0.036 <BR>
+• q19, a student's age group was statistically significant to loyalty, p = 0.036 <BR>
 <BR>
-• q 10.7 whether a student has skills with using computing and informational technology was statistically significant, p = 0.038 <BR>
+• q10.7 whether a student has skills with using computing and informational technology was statistically significant to loyalty, p = 0.038 <BR>
 <BR>
-• q 6.2, the number of books which students read for their own enjoyment outside of class was statistically significant, p = 0.017. <BR>
+• q6.2, the number of books which students read for their own enjoyment outside of class was statistically significant to loyalty, p = 0.017. <BR>
 <BR>
 
 </font>
 
 ---
-## Conclusions
+## Results
 
 <font size = 6>
 
@@ -868,7 +884,86 @@ kable(summary(full.model)$coef,
 </font>
 
 
+---
+class:inverse middle center
+name:Visual
 
+# Summary and Conclusion
+
+
+---
+
+
+# Summary
+
+<font size = 6>
+
+• We looked at three logisitic regression models: full, reduced, and stepwise <BR>
+<BR>
+• Of these three the stepwise model showed the best performance for both student satisfaction and student loyalty <BR>
+<BR>
+• The stepwise model had small predictive errors, a good ROC, and was more simple than a full model <BR>
+<BR>
+
+
+</font>
+
+---
+
+## Student Loyalty Summary
+
+<font size = 6>
+
+• The stepwise model included q15 (GPA), q16 (credit hours), q21 (whether they have children living with them), q25 (which school), and the average variables <BR>
+<BR>
+• All of these factors showed statistical significance (p<.05) except for q16, avg_remedial, and avg_payments. <BR>
+<BR>
+• These statistically significant variables would be worth looking into regarding student loyalty <BR>
+<BR>
+
+
+</font>
+
+---
+
+## Student Satisfaction Summary
+
+<font size = 6>
+
+• The stepwise model included q15 (GPA), q16 (credit hours), q19 (age group), q25 (which school), avg_encouragement, avg_growth, avg_retention, and avg_writing <BR>
+<BR>
+• All of these factors showed statistical significance (p<.05) except for q16, and avg_writing. <BR>
+<BR>
+
+</font>
+
+---
+
+# Conclusion
+
+<font size = 6>
+
+• q15 (GPA), q25 (which school) avg_encouragement, avg_growth, and avg_retention were in both final models and were statistically significant <BR>
+<BR>
+• q16 (credit hours) was in both final models, but not statistically significant in either <BR>
+<BR>
+
+
+</font>
+
+---
+
+# Conclusion
+
+<font size = 6>
+
+• GPA and which of the two school (FS vs SM) are significant in regards to both loyalty and satisfaction. <BR>
+<BR>
+• Additionally, avg_encouragement, avg_growth, and avg_retention were significant to both loyalty and satisfaction <BR>
+<BR>
+• These variables are worth looking into further to understand which factors play the biggest role in a student's loyalty and satisfaction. 
+
+</font>
 
 ---
 name: Thank you
@@ -884,7 +979,6 @@ Slides created using R packages:
 [**R Markdown**](https://rmarkdown.rstudio.com)<br>
 via <br>
 [**RStudio Desktop**](https://posit.co/download/rstudio-desktop/)
-
 
 
 

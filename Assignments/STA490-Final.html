@@ -143,13 +143,27 @@ class: center, middle, inverse, title-slide
 
 ---
 
+## Additional Variables
 
+&lt;font size = 6&gt;
+• Some questions in the survey resulted in several variables  &lt;BR&gt;
+&lt;BR&gt;
+• The decision was made to condense several variables down into their average &lt;BR&gt;
+&lt;BR&gt;
+• This process created 9 averaged variables named, avg_engagement, avg_learning, avg_writing, avg_remedial, avg_encouragement, avg_growth, avg_resource, avg_retention, and avg_payment &lt;BR&gt;
+&lt;BR&gt;
+
+&lt;/font&gt;
+
+
+
+---
 
 ## Data Split 
 
 &lt;font size = 6&gt;
 
-• Spilt the data into two groups &lt;BR&gt;
+• Split the data into two groups &lt;BR&gt;
 &lt;BR&gt;
 • 80% for training &lt;BR&gt;
 &lt;BR&gt;
@@ -493,7 +507,7 @@ Table: Average prediction errors for Full, Stepwise, and Reduced Models
 
 | Full_Model| Stepwise_Model| Reduced_Model|
 |----------:|--------------:|-------------:|
-|  0.1538462|      0.1538462|     0.1384615|
+|       0.15|           0.15|     0.1961538|
 ---
 
 ## Cross Validation
@@ -626,7 +640,7 @@ name:Visual
 
 &lt;font size = 6&gt; 
 
-• The data set orignially loads in with half missing observations &lt;BR&gt;
+• The data set originally loads in with half missing observations &lt;BR&gt;
 &lt;BR&gt;
 • Determined to be a loading issue, all missing observations were removed &lt;BR&gt;
 &lt;BR&gt;
@@ -640,15 +654,19 @@ name:Visual
 ---
 
 
+class:inverse middle center
+name:Visual
 
-&lt;!-- Start of Josie's Slides  --&gt;
+# Practical Interpretation of Our Findings
 
 
-## Further Investigation of Student Satisfaction Findings
+---
+
+## Further Investigation of our Findings
 
 &lt;font size = 6&gt;
 
-• We have created several logistic regression models for the survey data with student satisfaction (q17) as the binary response variable &lt;BR&gt;
+• We have created several logisitic regression models for the survey data with student satisfaction (q17) as the binary response variable &lt;BR&gt;
 &lt;BR&gt;
 • Now, let's further investigate the statistical significance of certain variables &lt;BR&gt;
 &lt;BR&gt;
@@ -661,7 +679,7 @@ name:Visual
 
 &lt;font size = 6&gt;
 
-• My research question for this project was does satisfaction significantly differ between students who began their education at the particular college and transfer students? &lt;BR&gt;
+• One question I had for this project was does loyalty/satisfaction significantly differ between transfer and non-transfer students? &lt;BR&gt;
 &lt;BR&gt;
 • Could transfer students have lower satisfaction due to the difficult and long transfer process? &lt;BR&gt;
 &lt;BR&gt;
@@ -673,110 +691,43 @@ name:Visual
 
 &lt;font size = 6&gt;
 
-• We will use q17 as our binary response variable (student satisfaction: yes or no) &lt;BR&gt;
+• We have used q17 as our binary response variable (student satisfaction: yes or no) &lt;BR&gt;
 &lt;BR&gt;
 • Let's look back at the full model to start &lt;BR&gt;
 &lt;BR&gt;
 &lt;font size = 6&gt;
 
 
----
 
 
-Table: Full Model Summary of the Inferential Statistics
-
-|            |   Estimate| Std. Error|    z value| Pr(&gt;&amp;#124;z&amp;#124;)|
-|:-----------|----------:|----------:|----------:|------------------:|
-|(Intercept) | 25.4722831| 16.4189777|  1.5513928|          0.1208076|
-|q1          |  0.0737232|  0.6893517|  0.1069457|          0.9148321|
-|q2          | -0.7338168|  1.0635023| -0.6900002|          0.4901940|
-|q3          | -0.1385217|  1.6956059| -0.0816945|          0.9348896|
-|q61         |  0.6015650|  0.7464637|  0.8058865|          0.4203083|
-|q62         |  1.6120928|  0.7123427|  2.2630859|          0.0236304|
-|q63         | -0.8026863|  0.5821203| -1.3789012|          0.1679252|
-|q7          |  0.3462524|  0.4521742|  0.7657500|          0.4438251|
-|q81         | -0.3551840|  0.8162407| -0.4351461|          0.6634564|
-|q82         |  5.4840049|  1.9548267|  2.8053662|          0.0050259|
-|q83         |  2.5259313|  1.2688056|  1.9907947|          0.0465035|
-|q84         | -3.5445935|  1.6083133| -2.2039198|          0.0275300|
-|q85         |  0.4418764|  0.8226011|  0.5371697|          0.5911504|
-|q86         | -0.6706903|  1.1046787| -0.6071361|          0.5437606|
-|q87         |  0.8398276|  1.2293947|  0.6831228|          0.4945292|
-|q88         | -0.5020530|  0.6434350| -0.7802699|          0.4352320|
-|q89         | -0.1066515|  1.2621769| -0.0844980|          0.9326605|
-|q91         |  0.6771104|  0.7705823|  0.8786997|          0.3795641|
-|q92         |  1.1984006|  0.9195811|  1.3032027|          0.1925056|
-|q93         | -0.3409025|  0.9151823| -0.3724968|          0.7095230|
-|q94         |  2.5744605|  0.9709500|  2.6514862|          0.0080138|
-|q95         | -2.9600449|  1.1734096| -2.5226015|          0.0116490|
-|q96         | -3.2448750|  1.3437103| -2.4148621|          0.0157412|
-|q97         | -0.1407335|  0.6693475| -0.2102548|          0.8334688|
-|q101        | -1.4860275|  1.2668111| -1.1730459|          0.2407774|
-|q102        | -0.2419747|  0.8862602| -0.2730289|          0.7848310|
-|q103        |  1.9472283|  1.3056722|  1.4913607|          0.1358668|
-|q104        | -1.2328903|  1.0662682| -1.1562667|          0.2475721|
-|q105        | -1.5015228|  1.2818033| -1.1714144|          0.2414323|
-|q106        |  0.0472141|  0.9684276|  0.0487534|          0.9611158|
-|q107        |  3.0764872|  1.2482525|  2.4646353|          0.0137153|
-|q108        |  0.4979380|  0.9727539|  0.5118848|          0.6087316|
-|q109        | -0.6710769|  0.9073574| -0.7395949|          0.4595458|
-|q1010       |  0.2517201|  1.0384105|  0.2424090|          0.8084633|
-|q1011       | -3.0156028|  1.1311092| -2.6660580|          0.0076746|
-|q1012       | -0.0180928|  0.9262325| -0.0195338|          0.9844153|
-|q1013       |  1.7437463|  0.9356864|  1.8636011|          0.0623777|
-|q1014       | -0.8649359|  0.9489314| -0.9114840|          0.3620404|
-|q1015       |  1.5052604|  0.7855769|  1.9161209|          0.0553497|
-|q121        | -0.2067404|  0.6195052| -0.3337186|          0.7385919|
-|q122        |  0.4238853|  0.7834023|  0.5410825|          0.5884507|
-|q123        | -0.5994390|  0.7146214| -0.8388203|          0.4015702|
-|q124        |  0.3794085|  0.6403566|  0.5924956|          0.5535188|
-|q125        |  2.2384206|  0.8997404|  2.4878517|          0.0128517|
-|q131        |  0.2267842|  0.7876355|  0.2879304|          0.7734000|
-|q132        | -0.3743121|  0.8145558| -0.4595291|          0.6458542|
-|q133        | -0.6924212|  1.0302323| -0.6721020|          0.5015188|
-|q134        |  0.2733378|  0.8279304|  0.3301459|          0.7412897|
-|q135        | -0.8998329|  0.6779328| -1.3273187|          0.1844033|
-|q136        |  0.0097909|  1.2194620|  0.0080289|          0.9935940|
-|q14         | -0.7792689|  1.0797455| -0.7217154|          0.4704695|
-|q15         |  1.8481117|  0.8255286|  2.2387011|          0.0251754|
-|q16         | -0.8074214|  0.4913886| -1.6431424|          0.1003535|
-|q18         |  8.2982935|  2.2234774|  3.7321241|          0.0001899|
-|q19         | -1.7156620|  0.8045798| -2.1323701|          0.0329764|
-|q20         | -1.1636157|  1.3462442| -0.8643422|          0.3873999|
-|q21         | -7.0157842|  3.3377405| -2.1019562|          0.0355571|
-|q22         |  3.9095372|  2.7588308|  1.4170993|          0.1564539|
-|q23         | -4.5705623|  3.9300937| -1.1629652|          0.2448436|
-|q24         | -1.2402481|  0.5809392| -2.1349017|          0.0327690|
-|q25         | -2.3883635|  1.4148896| -1.6880211|          0.0914072|
 
 
 &lt;/font&gt;
 
 ---
-## Logisitic Regression Model Findings Continued
+## Transfer Students vs Non-Transfer Students
 
 &lt;font size = 6&gt;
 
-• We can see that the question regarding a student's transfer status, q2, was not statistically significant, p = 0.569. &lt;BR&gt;
+• We saw that the question regarding a student's transfer status, q2, was not statistically significant to loyalty, p = 0.569 &lt;BR&gt;
 &lt;BR&gt;
-• This indicates that a student's transfer status is not statistically significant to their overall satisfaction &lt;BR&gt;
+• Neither was it statistically significant to satisfaction, p = 0.259 &lt;BR&gt;
 &lt;BR&gt;
-• No signficant difference in satisfaction between transfer students and non-transfer students &lt;BR&gt;
+• No significant difference in satisfaction between transfer students and non-transfer students &lt;BR&gt;
 &lt;BR&gt;
-• q2 would not be used in either a reduced or a stepwise selection model &lt;BR&gt;
 &lt;BR&gt;
 
 
 &lt;/font&gt;
 ---
 
-## Other Notable Findings 
+## Non-Significant Factors
 
 &lt;font size = 6&gt;
 
-• Whether or not a student is an international student, q23, was also not statistically significant, p = 0.228. &lt;BR&gt;
+• Whether or not a student is an international student, q23, was also not statistically significant to loyalty, p = 0.228, or to satisfaction, p = 0.657 &lt;BR&gt;
 &lt;BR&gt;
-• Gender was also not statistically significant, p =  0.909. &lt;BR&gt;
+• Gender, q20, was also not statistically significant to loyalty, p =  0.909, or to satisfaction, p = 0.982 &lt;BR&gt;
 &lt;BR&gt;
 
 &lt;/font&gt;
@@ -787,17 +738,17 @@ Table: Full Model Summary of the Inferential Statistics
 
 &lt;font size = 6&gt;
 
-• q19, a student's age group was statistically significant with a p-value of p = 0.036 &lt;BR&gt;
+• q19, a student's age group was statistically significant to loyalty, p = 0.036 &lt;BR&gt;
 &lt;BR&gt;
-• q 10.7 whether a student has skills with using computing and informational technology was statistically significant, p = 0.038 &lt;BR&gt;
+• q10.7 whether a student has skills with using computing and informational technology was statistically significant to loyalty, p = 0.038 &lt;BR&gt;
 &lt;BR&gt;
-• q 6.2, the number of books which students read for their own enjoyment outside of class was statistically significant, p = 0.017. &lt;BR&gt;
+• q6.2, the number of books which students read for their own enjoyment outside of class was statistically significant to loyalty, p = 0.017. &lt;BR&gt;
 &lt;BR&gt;
 
 &lt;/font&gt;
 
 ---
-## Conclusions
+## Results
 
 &lt;font size = 6&gt;
 
@@ -812,7 +763,86 @@ Table: Full Model Summary of the Inferential Statistics
 &lt;/font&gt;
 
 
+---
+class:inverse middle center
+name:Visual
 
+# Summary and Conclusion
+
+
+---
+
+
+# Summary
+
+&lt;font size = 6&gt;
+
+• We looked at three logisitic regression models: full, reduced, and stepwise &lt;BR&gt;
+&lt;BR&gt;
+• Of these three the stepwise model showed the best performance for both student satisfaction and student loyalty &lt;BR&gt;
+&lt;BR&gt;
+• The stepwise model had small predictive errors, a good ROC, and was more simple than a full model &lt;BR&gt;
+&lt;BR&gt;
+
+
+&lt;/font&gt;
+
+---
+
+## Student Loyalty Summary
+
+&lt;font size = 6&gt;
+
+• The stepwise model included q15 (GPA), q16 (credit hours), q21 (whether they have children living with them), q25 (which school), and the average variables &lt;BR&gt;
+&lt;BR&gt;
+• All of these factors showed statistical significance (p&lt;.05) except for q16, avg_remedial, and avg_payments. &lt;BR&gt;
+&lt;BR&gt;
+• These statistically significant variables would be worth looking into regarding student loyalty &lt;BR&gt;
+&lt;BR&gt;
+
+
+&lt;/font&gt;
+
+---
+
+## Student Satisfaction Summary
+
+&lt;font size = 6&gt;
+
+• The stepwise model included q15 (GPA), q16 (credit hours), q19 (age group), q25 (which school), avg_encouragement, avg_growth, avg_retention, and avg_writing &lt;BR&gt;
+&lt;BR&gt;
+• All of these factors showed statistical significance (p&lt;.05) except for q16, and avg_writing. &lt;BR&gt;
+&lt;BR&gt;
+
+&lt;/font&gt;
+
+---
+
+# Conclusion
+
+&lt;font size = 6&gt;
+
+• q15 (GPA), q25 (which school) avg_encouragement, avg_growth, and avg_retention were in both final models and were statistically significant &lt;BR&gt;
+&lt;BR&gt;
+• q16 (credit hours) was in both final models, but not statistically significant in either &lt;BR&gt;
+&lt;BR&gt;
+
+
+&lt;/font&gt;
+
+---
+
+# Conclusion
+
+&lt;font size = 6&gt;
+
+• GPA and which of the two school (FS vs SM) are significant in regards to both loyalty and satisfaction. &lt;BR&gt;
+&lt;BR&gt;
+• Additionally, avg_encouragement, avg_growth, and avg_retention were significant to both loyalty and satisfaction &lt;BR&gt;
+&lt;BR&gt;
+• These variables are worth looking into further to understand which factors play the biggest role in a student's loyalty and satisfaction. 
+
+&lt;/font&gt;
 
 ---
 name: Thank you
@@ -828,7 +858,6 @@ Slides created using R packages:
 [**R Markdown**](https://rmarkdown.rstudio.com)&lt;br&gt;
 via &lt;br&gt;
 [**RStudio Desktop**](https://posit.co/download/rstudio-desktop/)
-
 
 
 
